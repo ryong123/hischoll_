@@ -11,14 +11,14 @@ const{
 // ===== publicPost =====
 
 // GET /publicPostMain 익명 게시판 정보 가져오기
-exports.getPost() = async (req,res) =>{
+exports.getPost = async (req,res) =>{
     try{
         const Posts = await Public_post.findAll();
         res.render('/publicPost/publicPostMain', {data: Posts});
     }
     catch{
         console.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -29,13 +29,13 @@ exports.getNewPost = async (req, res) => {
     }
     catch{
         console.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
 // POST /publicNewPost/:userid_num 게시물 생성
 // POST /publicNewPost
-exports.createPost() = async (req,res) =>{
+exports.createPost = async (req,res) =>{
     try{
         // const {userid_num} = req.params.userid_num;
         const { 
@@ -54,7 +54,7 @@ exports.createPost() = async (req,res) =>{
     }
     catch(err){
         console.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -75,7 +75,7 @@ exports.getPostDetail = async (req,res) =>{
     }
     catch(err){
         console.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -96,7 +96,7 @@ exports.createPostComment = async (req,res) => {
     }
     catch(err){
         console.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -113,8 +113,8 @@ exports.createPostCommentLike = async (req,res) =>{
         res.send(publicPostCommentLike)
     }
     catch(err){
-        onsole.error(err);
-        res.sned("Internal Server Error!");
+        console.error(err);
+        res.send("Internal Server Error!");
     }
 }
 
@@ -143,8 +143,8 @@ exports.patchPost = async (req,res) => {
         res.send(updatePost);
     }
     catch(err){
-        onsole.error(err);
-        res.sned("Internal Server Error!");
+        console.error(err);
+        res.send("Internal Server Error!");
     }
 }
 
@@ -167,8 +167,8 @@ exports.patchPostComment = async (req,res) =>{
         }
     }
     catch(err){
-        onsole.error(err);
-        res.sned("Internal Server Error!");
+        console.error(err);
+        res.send("Internal Server Error!");
     }
 }
 
@@ -190,8 +190,8 @@ exports.patchPostCommentLike = async (req,res) =>{
             res.send(updatePostCommentLike)
         }
     }catch(err){
-        onsole.error(err);
-        res.sned("Internal Server Error!");
+        console.error(err);
+        res.send("Internal Server Error!");
     }
 }
 
@@ -216,7 +216,7 @@ exports.deletePost = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -241,7 +241,7 @@ exports.deletePostComment = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -259,7 +259,7 @@ exports.dm = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -270,7 +270,7 @@ exports.getDmDetail = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -288,7 +288,7 @@ exports.postDm = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -310,7 +310,7 @@ exports.deleteDm = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -329,7 +329,7 @@ exports.getClubMembers = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -348,7 +348,7 @@ exports.getClubMember = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -359,7 +359,7 @@ exports.getClubAdminApplyDetail = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -384,7 +384,7 @@ exports.createClubMembers = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -401,7 +401,7 @@ exports.getClubMembersApplyList = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -424,7 +424,7 @@ exports.deleteMembersApplyList = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -446,7 +446,7 @@ exports.deleteMembers = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -457,7 +457,7 @@ exports.getClubAdminTransfer = async (req,res) =>{
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -474,7 +474,7 @@ exports.getAllMembers = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }
 
@@ -497,6 +497,6 @@ exports.deleteClubAdminTransfer = async (req,res) => {
     }
     catch(err){
         nsole.error(err);
-        res.sned("Internal Server Error!");
+        res.send("Internal Server Error!");
     }
 }

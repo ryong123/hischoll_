@@ -14,27 +14,7 @@
 <body>
    <%- include('../component/header')%>
       <div id="plus-button" class="plus-button">+</div>
-
-      <!-- 모달 배경 -->
-      <div id="modal-background" class="modal-background" style="display: none"></div>
-
-      <!-- 모달 창 -->
-      <div id="modal" class="modal" style="display: none">
-         <!-- 모달 내용 -->
-         <div class="modal-content">
-            <!-- 모달 닫기 버튼 -->
-            <span id="close-modal" class="close-modal">&times;</span>
-
-            <!-- 글쓰기 폼 -->
-            <form id="post-form" name="add-post">
-               <h2>게시글 작성</h2>
-               <input type="text" id="post-title" name="title" placeholder="제목을 입력하세요" />
-               <textarea id="post-content" name="content" placeholder="내용을 입력하세요"></textarea>
-               <button type="button" class="btn-primary" onclick="addpost()">
-                  등록하기
-               </button>
-            </form>
-         </div>
+      </div>
       </div>
 
       <!-- 상세 게시글 보기를 위한 모달 추가 -->
@@ -48,7 +28,20 @@
 
       <!-- 게시물 목록 -->
       <div id="posts-container">
-         <!-- 게시물들이 여기에 추가 -->
+         <% for(let i=0; i<data.length;i++){ %>
+            <div class="list" onclick="showDetail(event)">
+               <div style="display: inline;" class="club_id">
+                  <%=data[i].club_id%>
+               </div>
+               <div class="list-title">
+                  <%= data[i].club_name%>
+               </div>
+               <div class="list-content">
+                  <%=data[i].keyword%>
+               </div>
+            </div>
+            <% } %>
+
       </div>
       <script>
          const plusBtn = document.querySelector(".plus-button");
