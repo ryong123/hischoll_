@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="/style.css">
+   <!-- axios CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <title>하이스쿨 - 게시글 작성</title>
+   <style>
+      #secret{
+         border: 1px solid black;
+         display: block;
+      }
+      #supportContent{
+         height: 30rem;
+      }
+   </style>
+</head>
+
+<body>
+   <%- include('../component/header') %>
+   <div class="container">
+      <!-- 글쓰기 폼 -->
+      <form id="support-form" name="support-form">
+         <div>
+            <input type="checkbox" id="isSecret" />
+            <label for="isSecret"><span>비밀글</span></label>
+          </div>
+
+
+         <textarea class="textField" id="supportContent" name="content" placeholder="내용을 입력하세요"></textarea>
+         <div class="cta">
+            <button type="button" class="btn btn-primary" onclick="addsupport()">
+               등록하기
+            </button>
+         </div>
+         
+      </form>
+   </div>
+
+   <script>
+      const form = document.forms["support-form"];
+      const secretBox=document.getElementById('isSecret');
+      
+
+
+      async function addsupport() {
+
+         let secret;
+      if(secretBox.checked){
+         secret=true;
+      }else{
+         secret=false;
+      }
+         console.log(secret)
+
+         try{
+            const res= await axios({
+            method: "POST",
+            url: `/supportNewPost`,
+            data: {
+               secret:secret,
+               content: form.content.value,
+            },
+         });
+         console.log(res)
+         if(res.data.isSuccess){
+            alert('등록되었습니다');
+            window.location.href='/supportMain'
+         }
+
+            }catch(error){
+               console.log("support에서 게시글 등록 오류 > ", error);
+            };
+      }
+   </script>
+</body>
+
+</html>

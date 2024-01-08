@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      .agree{
+        display: flex;
+        justify-content: space-between;
+
+      }
+      .wide{
+        height: 6rem;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <%- include('../component/header')%>
+    <main class="container">
+
+
+
+      <div class="input">
+        <label>이름</label>
+        <div class="list-title"><%=userInfo.name%></div>
+        <label>학교</label>
+        <div class="list-title"><%=userInfo.school%></div>
+        <label>학년</label>
+        <div class="list-title"><%=userInfo.grade%></div>
+        <label>지원동기</label>
+        <div class="wide textField" value="<%=getClubAdminApplyDetail.motivation%>" readonly><%=getClubAdminApplyDetail.motivation%></div>
+        <label>자기소개</label>
+        <div class="wide textField" value="<%=getClubAdminApplyDetail.introduction%>" readonly><%=getClubAdminApplyDetail.introduction%></div>
+      </div>
+
+      <div class="agree cta">
+        <button type="button" class="btn btn-primary" onclick="approve()">승인</button>
+        <button type='button' class='btn btn-neutral'onclick="reject()">거절</button>
+      </div>
+        
+      
+
+
+
+
+    </main>
+
+    <script>
+
+      function printout() {
+        console.log('sdfhosdfiosdjfoisd')
+      }
+
+      async function approve() {
+        try {
+          console.log("approve!!")
+          const res = await axios({
+            method: "PATCH",
+            url: "/clubAdminApplyDetail/<%=getClubAdminApplyDetail.club_id%>/<%=getClubAdminApplyDetail.userid_num%>",
+            data: {
+              motivation: "<%=getClubAdminApplyDetail.motivation%>",
+              introduction: "<%=getClubAdminApplyDetail.introduction%>",
+              applyResult: true,
+            },
+          });
+          // console.log(res);
+          if (res) {
+            alert("승인되었습니다");
+            window.location.href = "/clubAdminApplyList/<%=getClubAdminApplyDetail.club_id%>";
+          } else {
+            alert("오류가 발생했습니다. 다시 시도해주세요");
+          }
+        } catch (error) {
+          console.log("createClub 에서 axios error > ", error);
+        }
+      }
+
+      async function reject() {
+        try {
+          const res = await axios({
+            method: "DELETE",
+            url: "/clubAdminApplyDetail/<%=getClubAdminApplyDetail.club_id%>/<%=getClubAdminApplyDetail.userid_num%>",
+          });
+          console.log(res);
+          if (res.data.isDeleted) {
+            alert("거절되었습니다");
+            window.location.href = "/clubAdminApplyList/<%=getClubAdminApplyDetail.club_id%>";
+          } else {
+            alert("오류가 발생했습니다. 다시 시도해주세요");
+          }
+        } catch (error) {
+          console.log("clubAdminApplyDetail 에서 axios error > ", error);
+        }
+      }
+    </script>
+  </body>
+</html>

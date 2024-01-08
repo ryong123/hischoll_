@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>가입 요청</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    .noneMessage{
+      font-size: 1rem;
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <%- include('../component/header')%>
+  <main class="container">
+
+      <!-- 가입 요청 목록 -->
+      <% if(getApplyList.length==0){%>
+        <div class="emptyFull"><span>가입 요청이 없습니다.</span></div>
+        
+        <%} else {%>
+      <% for(let i=0; i<getApplyList.length;i++){ %>
+      <div class="list">
+        <div class="list-title"><%=userInfo[i]%></div>
+        <div class="list-content"><%=getApplyList[i].introduction.slice(0,19)%>. . .</div>
+        <button class="<%=getApplyList[i].userid_num%>" onclick="checkDetail('<%=getApplyList[i].userid_num%>')">상세 정보 확인</button>
+      </div>
+      
+    
+      <% } %>
+      <% } %>
+      <!-- 추가 요청들을 여기에 반복 -->
+    
+
+
+</main>
+  <script>
+    console.log('<%=userInfo%>');
+    
+    const checkDetail=(userid_num)=>{
+      
+      window.location.href=`/clubAdminApplyDetail/<%=club_id%>/${userid_num}`
+      
+    }
+  </script>
+</body>
+
+</html>

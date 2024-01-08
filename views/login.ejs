@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>하이스쿨 - 로그인</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      .mainLogo {
+        text-align: center;
+        margin: 0 auto;
+        transform: translate(-10px);
+      }
+
+      .register {
+        width: 100%;
+        display: flex;
+        color: var(--color-gray-500);
+        justify-content: center;
+      }
+
+      .registerLink {
+        color: var(--color-primary-500);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="/icons/hischool_logo.svg" alt="" width="160" class="mainLogo"> 
+      <form name="login">
+        <div class="input">
+          <label for="userid">아이디</label>
+          <input
+            type="text"
+            id="userid"
+            class="textField"
+            onkeyup="if(window.event.keyCode==13){handleLogin()}"
+            value="admin"
+          />
+        </div>
+        <div class="input">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            class="textField"
+            onkeyup="if(window.event.keyCode==13){handleLogin()}"
+            value="12341234"
+          />
+        </div>
+        <div>
+          <input type="checkbox" id="autoLogin" />
+          <label for="autoLogin"><span>자동 로그인</span></label>
+        </div>
+
+        <div class="register">
+          <span
+            >아직 회원이 아니신가요?
+            <a href="/register" class="registerLink">회원가입</a></span
+          >
+        </div>
+      </form>
+
+      <div class="cta">
+        <button type="button" class="btn btn-primary" onclick="handleLogin()">
+          로그인
+        </button>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+    </script>
+
+    <script>
+      const form = document.forms["login"];
+
+      async function handleLogin() {
+        try {
+          const result = axios({
+            method: "POST",
+            url: "/login",
+            data: {
+              userid: form.userid.value,
+              password: form.password.value,
+              autoLogin: form.autoLogin.checked,
+            },
+          }).then((res) => {
+            console.log(res.data.isLoggedIn);
+            if (res.data.isLoggedIn === true) {
+              console.log(res.data);
+              // alert('로그인 성공')
+              // localStorage.setItem('token', res.data.token)
+              document.location.href = "/home";
+            }
+          });
+        } catch (err) {
+          document.location.href = "/login";
+          console.log(err);
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- jquery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+    integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+  <title>과학 동아리</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    #motivation,
+    #introduction {
+      height: 11rem;
+    }
+
+    .textNum {
+      display: flex;
+      justify-content: space-between;
+
+    }
+  </style>
+
+</head>
+
+<body>
+  <%- include('../component/header')%>
+    <main class="container">
+
+
+      <form name="clubApplyform" onsubmit="clubApply(event)">
+
+        <div class="input">
+          <h2>지원동기</h2>
+
+          <textarea class="textField" id="motivation" placeholder="지원동기를 입력해주세요" maxlength="100" required></textarea>
+          <div class="textNum">
+            <div class="helpText">최대 100글자까지 입력가능합니다</div>
+            <div class="helpText">
+              <span class="motivationCount">0</span>/100
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <div class="input">
+          <h2>자기소개</h2>
+          <textarea class="textField" id="introduction" placeholder="자기소개를 입력해주세요" maxlength="100" required></textarea>
+          <div class="textNum">
+            <div class="helpText">최대 100글자까지 입력가능합니다</div>
+            <div class="helpText">
+              <span class="introductionCount">0</span>/100
+            </div>
+          </div>
+
+        </div>
+
+        <div class="cta">
+          <button type="submit" class="btn btn-primary">가입 신청</button>
+        </div>
+
+      </form>
+    </main>
+    <script>
+
+      // 유효성 검사 (글자수 세기, 글자수 넘어가면 경고 문구 보여주고 더이상 타이핑 되지 않도록 하기)
+      $('#motivation').keyup(function (e) {
+        let content1 = $(this).val();
+
+        // 글자수 세기
+        if (content1.length == 0 || content1 == '') {
+          $('.motivationCount').text('0');
+        } else {
+          $('.motivationCount').text(content1.length);
+        }
+
+
+
+        // 글자수 제한
+        if (content1.length > 100) {
+
+          $(this).val($(this).val().substring(0, 100));
+
+        };
+      });
+
+      $('#introduction').keyup(function (e) {
+        let content2 = $(this).val();
+
+        // 글자수 세기
+        if (content2.length == 0 || content2 == '') {
+          $('.introductionCount').text('0');
+        } else {
+          $('.introductionCount').text(content2.length);
+        }
+        if (content2.length > 100) {
+
+          $(this).val($(this).val().substring(0, 100));
+
+        };
+      });
+
+
+
+
+
+      async function clubApply(event) {
+
+        event.preventDefault();
+        const createClubForm = document.forms["clubApplyform"];
+        let motivation = createClubForm.elements["motivation"].value;
+        let introduction = createClubForm.elements["introduction"].value;
+
+
+
+
+
+        // 가입 신청 요청
+
+        if (confirm('제출 후에는 변경 불가합니다. 정말 신청하시겠습니까?')) {
+          try {
+            const res = await axios({
+              method: "POST",
+              url: `/clubApply/<%=data%>`,
+              data: {
+                motivation: motivation,
+                introduction: introduction,
+
+              },
+            });
+            console.log(res.data);
+            if (res.data.isApplySuccess) {
+              alert('가입 신청이 완료되었습니다.');
+              window.location.href = '/clubDetail/<%=data%>';
+            }
+            else {
+              alert('가입 신청이 되지 않았습니다. 다시 신청해주세요');
+              return;
+            }
+          } catch (error) {
+            console.log("createClub 에서 axios error > ", error);
+          }
+
+        } else {
+          return;
+        }
+
+      }
+    </script>
+</body>
+
+</html>

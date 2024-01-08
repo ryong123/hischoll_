@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 목록</title>
+  
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminMemberList.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+
+  </style>
+</head>
+
+
+
+
+<body>
+  <%- include('../component/header')%>
+   <div class="container">
+    <input id="userid_num" style="display: none;">
+      <% if (data.length==0) { %>
+   <div class="emptyFull"><span>위임할 수 있는 회원이 없습니다.</span></div>
+      <% }else{%>
+        <% for(let i=0; i<data.length;i++){ %>
+
+       <div class="list" id="<%=data[i].useid_num%>" onclick="selectClubLeader('<%=data[i].userid_num%>',this)">
+    
+     
+        <div class="list-title" onclick="selectClubLeader('<%=data[i].userid_num%>')"><%=userInfo[i]%></div>
+        <div class="list-content" onclick="selectClubLeader('<%=data[i].userid_num%>')">가입일: <%=data[i].updatedAt.getFullYear()%>년 <%=data[i].updatedAt.getMonth()+1%>월 <%=data[i].updatedAt.getDate()%>일 </div>
+      
+      
+       </div>
+       <% } %>
+      <%} %>
+     
+       
+       <button type="button" class="btn btn-primary" onclick="transferClubLeader()">위임하기</button>
+   </div>
+
+  </div>
+  <script>
+    console.log('<%=userInfo%>')
+
+    const userid_num=document.querySelector('#userid_num');
+
+   function selectClubLeader(userid_num, clickedDiv){
+    document.querySelector('#userid_num').value = userid_num;
+    const lists = document.getElementsByClassName('list');
+    for(i=0; i<lists.length;i++){
+      lists[i].style.backgroundColor='white'
+    }
+    clickedDiv.style.backgroundColor='var(--color-primary-50)'
+
+   }
+   async function transferClubLeader(){
+    const selectedMember = document.querySelector('#userid_num').value;
+    if (!selectedMember){
+      alert('위임할 부원을 선택해주세요');
+      return;
+    }
+    else{
+
+    try {
+          const res = await axios({
+            method: "PATCH",
+            url: `/clubAdminTransfer/<%=club_id%>/${selectedMember}`,
+            data: {
+              changeLeader:true
+            },
+          });
+          // console.log(res);
+          if (res.data.isSuccess) {
+            alert("변경되었습니다");
+            window.location.href = "/myclubMain/<%=club_id%>";
+          } else {
+            alert("오류가 발생했습니다. 다시 시도해주세요");
+          }
+        } catch (error) {
+          console.log("clubAdminTransfer 에서 axios error > ", error);
+        }
+      }
+    }
+
+   
+  </script>
+
+
+</body>
+
+</html>

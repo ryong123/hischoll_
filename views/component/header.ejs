@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="/style.css" />
+<script src="https://unpkg.com/feather-icons"></script>
+<link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+
+    <header class="header">
+      <nav class="navbar">
+        <% if(typeof link !== 'undefined' && link) { %>
+        <div class="menu-icon" onclick="toPage('<%= link %>')">
+          <i data-feather="chevron-left" class="icon"></i>
+        </div>
+        <% } else { %>
+        <div class="menu-icon" onclick="history.back()">
+          <i data-feather="chevron-left" class="icon"></i>
+        </div>
+        <% } %>
+
+        <div class="close-menu" onclick="toggleSidebar()">
+          <i data-feather="x" class="icon"></i>
+        </div>
+
+        <div class="logo">
+          <img src="/icons/hi_logo.svg" alt="" width="40" onclick="toPage('/Home')">
+        </div>
+
+        <% if(typeof title !== 'undefined' && title) { %>
+        <div class="title" onclick="toPage('/Home')"><%= title %></div>
+      <% } else { %>
+      <div class="title" onclick="toPage('/Home')">하이스쿨</div>
+        <% } %>
+
+        <div class="menu-bar">
+          <a href="/publicPostMain">자유게시판</a>
+          <!-- <a href="/mypageMain">마이페이지</a> -->
+          <a href="/supportMain">고객센터</a>
+        </div>
+    
+        <div class="nav-btn">
+          <div class="header-profile desktop" onclick="toPage('/mypageMain')">
+            <% if(typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+              <span><%= foundUser.name %>님</span>
+              <% if(typeof signedFile !== 'undefined' && signedFile) { %>
+                <img
+                  src="<%= signedFile %>"
+                  alt="프로필 이미지"
+                  width="28"
+                  height="28"
+                  style="border-radius: 100px"
+                />
+              <% } else { %>
+                <img src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png" alt="" width="28">
+              <% } %>
+            </div>
+            <button
+              class="btn-sm btn-secondary"
+              type="button"
+              onclick="handleLogout()"
+            >
+              로그아웃
+            </button>
+          </div>
+        <% } else { %>
+        <div class="nav-btn">
+          <button class="btn-sm btn-secondary" type="button" onclick="getRegister()">회원가입</button>
+          <button class="btn-sm btn-secondary" type="button" onclick="getLogin()">로그인</button>
+        </div>
+        <% } %>
+    
+        <!-- <div class="right-icon icon">
+          <i data-feather="send" class="icon"></i>
+        </div> -->
+      </nav>
+    </header>
+    
+    <div id="sidebar" class="sidebar">
+      <!-- <div  onclick="toggleSidebar()">
+      <i data-feather="menu"></i></div> -->
+      <a href="/home">홈</a>
+      <a href="/publicPostMain">전체게시판</a>
+      <!-- <a href="/mypageMain">마이페이지</a> -->
+      <a href="/supportMain">고객센터</a>
+
+      
+
+      <div class="header-profile mobile" onclick="toPage('/mypageMain')">
+        
+        <% if(typeof signedFile !== 'undefined' && signedFile) { %>
+        <div class="profileImg-container">
+          <img
+            src="<%= signedFile %>"
+            alt="프로필 이미지"
+            width="50"
+            height="50"
+            style="border-radius: 100px;"
+          />
+          <% if(typeof foundUser !== 'undefined' && foundUser) { %>
+            <span><%= foundUser.name %>님</span> 
+            <% } %>
+        </div>
+        <% } else { %>
+        <div class="profileImg-container">
+          <img src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png" alt="" width="48">
+        </div>
+        <% if(typeof foundUser !== 'undefined' && foundUser) { %>
+        <span><%= foundUser.name %>님</span> 
+        <% } %>
+      </div>
+      <% } %> 
+      <% if(typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+      <div class="menu-buttons">
+        <button
+          class="btn-sm btn-secondary"
+          type="button"
+          onclick="handleLogout()"
+        >
+          로그아웃
+        </button>
+      </div>
+      <% } else { %>
+      <div class="menu-buttons">
+        <button class="btn-sm btn-secondary" type="button" onclick="getRegister()">회원가입</button>
+        <button class="btn-sm btn-secondary" type="button" onclick="getLogin()">로그인</button>
+      </div>
+      <% } %>
+    </div>
+    <div class="shade hidden" onclick="closeMenu()"></div>
+      
+    </div>
+
+    <script>
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.querySelector(".close-menu").classList.toggle("visible");
+        document.querySelector(".menu-icon").classList.toggle("hidden");
+        document.querySelector(".shade").classList.toggle("visible")
+      }
+      feather.replace();
+    </script>
+
+    <script>
+      function toPage(link) {
+        document.location.href = link;
+      }
+
+
+      async function handleLogout() {
+        const result = await axios({
+          method: "GET",
+          url: "/logout"
+        })
+        console.log(result);
+        document.location.href = "/"
+        
+      }
+
+
+      function getRegister() {
+        document.location.href = "/register"
+      }
+
+      function getLogin() {
+        document.location.href = "/login"
+      }
+    </script>

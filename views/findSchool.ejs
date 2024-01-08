@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>하이스쿨 - 학교찾기</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+      .listContainer {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .selected {
+        border: solid 1.5px var(--color-primary-500) !important;
+        box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let selectedSchool;
+
+      async function getSchool() {
+        try {
+          const response = await axios.get(
+            "https://open.neis.go.kr/hub/schoolInfo?ATPT_OFCDC_SC_CODE=B10&SCHUL_KND_SC_NM=%EA%B3%A0%EB%93%B1%ED%95%99%EA%B5%90&Type=json&pIndex=1&pSize=1000&KEY=bc9bdb6745984db1894cbdd79cc0f628"
+          );
+          const schoolData = response.data.schoolInfo[1].row;
+          return schoolData;
+        } catch (error) {
+          console.error("학교 정보 가져오기 실패: ", error);
+          return [];
+        }
+      }
+
+      async function renderSchoolData(schoolData) {
+        const listContainer = document.querySelector(".listContainer");
+        listContainer.innerHTML = "";
+
+        if (schoolData.length > 0) {
+          for (let i = 0; i < schoolData.length; i++) {
+            const school = schoolData[i];
+            const list = document.createElement("div");
+            list.classList.add("list");
+            list.innerHTML = `
+              <h3>${school.SCHUL_NM}</h3>
+              <span>${school.ORG_RDNMA}</span>
+            `;
+
+            list.addEventListener("click", function () {
+              selectSchool(this);
+            });
+
+            listContainer.appendChild(list);
+          }
+        } else {
+          const noDataMessage = document.createElement("div");
+          noDataMessage.textContent = "검색 결과가 없습니다";
+          noDataMessage.style.textAlign = "center";
+          listContainer.appendChild(noDataMessage);
+        }
+      }
+
+      async function searchSchool() {
+        const searchText = document.querySelector(".textField").value;
+        const schoolData = await getSchool();
+
+        if (searchText === "") {
+          renderSchoolData(schoolData);
+        } else {
+          const filteredSchoolData = schoolData.filter((school) =>
+            school.SCHUL_NM.includes(searchText)
+          );
+          renderSchoolData(filteredSchoolData);
+        }
+      }
+
+      function selectSchool(element) {
+        const lists = document.querySelectorAll(".list");
+        lists.forEach((list) => {
+          list.classList.remove("selected");
+        });
+        element.classList.add("selected");
+
+        const button = document.querySelector(".btn-primary");
+        button.style.display = "block";
+
+        const selectedDiv = document.querySelector(".list.selected h3");
+        const h3Value = selectedDiv ? selectedDiv.textContent : "";
+
+        selectedSchool = h3Value
+      }
+
+    </script>
+
+    <div class="container">
+      <%- include('./component/header')%>
+
+      <input
+        type="text"
+        class="textField"
+        placeholder="검색어를 입력하세요"
+        oninput="searchSchool()"
+      />
+
+      <div class="listContainer"></div>
+      <div class="cta">
+        <button class="btn btn-primary hidden">선택</button>
+      </div>
+    </div>
+  </body>
+</html>

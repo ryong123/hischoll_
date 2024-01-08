@@ -1,0 +1,41 @@
+
+  /* 회원목록 상세 */
+  .content {
+    margin-top: 50px;
+    /* 헤더의 높이를 고려하여 조정 */
+    padding: 20px;
+  }
+  
+  .content-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .content-detail {
+    font-size: 1em;
+    color: #666;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  .submit-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 75px;
+  }
+  
+  /* 버튼 호버 효과 */
+  .submit-button:hover {
+    background-color: #b71c1c;
+  }
+
+  

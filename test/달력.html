@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Calendar</title>
+  <link rel="stylesheet" href="./달력.css">
+</head>
+
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div class="menu-icon">☰</div>
+      <h1 class="logo">일정</h1>
+      <div class="settings-icon">⚙</div>
+    </nav>
+  </header>
+
+  <div class="sec_cal">
+    <div class="cal_nav">
+      <a href="javascript:;" class="nav-btn go-prev">prev</a>
+      <div class="year-month"></div>
+      <a href="javascript:;" class="nav-btn go-next">next</a>
+    </div>
+    <div class="cal_wrap">
+      <div class="days">
+        <div class="day">MON</div>
+        <div class="day">TUE</div>
+        <div class="day">WED</div>
+        <div class="day">THU</div>
+        <div class="day">FRI</div>
+        <div class="day">SAT</div>
+        <div class="day">SUN</div>
+      </div>
+      <div class="dates">
+        <!-- 오늘 날짜의 일정 목록 -->
+        <div class="current-date-schedules">
+          <!-- 여기에 오늘 날짜의 일정 목록이 표시됩니다. -->
+        </div>
+      </div>
+
+      <div class="schdules-box">
+        <button id="openBtn" class="btn">일정보기</button>
+        <div class="list-additional">
+          <div class="list-additional-main"> </div>
+        </div>
+      </div>
+
+      <button id="closeBtn" class="btn">닫기</button>
+    </div>
+  </div>
+
+  <div class="fullscreen-modal">
+    <div class="fullscreen-modal-content">
+      <span class="close-fullscreen-modal">×</span>
+      <div class="list">
+        <div class="list-title">제목</div>
+        <input type="text" class="dateInput-title" placeholder="제목을 입력하세요">
+        <div class="list-content">내용</div>
+        <input type="text" class="dateInput-content" placeholder="내용을 입력하세요">
+      </div>
+      <button id="submitDate">확인</button>
+    </div>
+  </div>
+
+  <script>
+    // 전역 변수 선언 부분
+    const fullscreenModal = document.querySelector('.fullscreen-modal');
+    const fullscreenModelClose = document.querySelector('.close-fullscreen-modal');
+    const dateInputTitle = document.querySelector('.dateInput-title');
+    const dateInputContent = document.querySelector('.dateInput-content');
+    const openBtn = document.getElementById('openBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const datesContainer = document.querySelector('.dates');
+    const yearMonth = document.querySelector('.year-month');
+    const goPrevBtn = document.querySelector('.go-prev');
+    const goNextBtn = document.querySelector('.go-next');
+    let thisMonth;
+    let selectedDate;
+    let schedules = [];
+    let scheduleIdCounter = 1;
+
+
+    // 일정 추가시 날짜위에 파란색 점 표시 // 
+    function updateIconForDate(date) {
+      const dayElem = document.querySelector(`.day[data-date="${date}"]`);
+      if (dayElem) {
+        const hasSchedule = schedules.some(schedule => schedule.date === date);
+        let icon = dayElem.querySelector('.icon');
+
+        if (hasSchedule && !icon) {
+          icon = document.createElement('div');
+          icon.className = 'icon';
+          dayElem.appendChild(icon);
+        } else if (!hasSchedule && icon) {
+          icon.remove();
+        }
+      }
+    }
+
+
+    // 클릭한 날짜에 해당하는 일정을 표시하고, 클릭하지 않은 날짜에 해당하는 일정을 숨기는 함수
+    function toggleSchedulesVisibility(selectedDate) {
+      const allDates = document.querySelectorAll('.day.current');
+      allDates.forEach(dateElem => {
+        const date = dateElem.getAttribute('data-date');
+        const isSelectedDate = date === selectedDate;
+        const hasSchedule = schedules.some(schedule => schedule.date === date);
+
+        if (isSelectedDate) {
+          dateElem.classList.add('selected');
+        } else {
+          dateElem.classList.remove('selected');
+        }
+
+        // 이 부분에서 updateIconForDate 함수를 호출해야 하지만,
+        // 함수 정의가 필요합니다. 이 함수를 아래에 정의해 주세요.
+        updateIconForDate(date);
+      });
+    }
+
+    // 모달을 숨기는 함수
+    function hideFullscreenModal() {
+      fullscreenModal.style.display = 'none';
+      selectedDate = null;
+      // 이 함수 호출은 toggleSchedulesVisibility 함수 정의 이후에 와야 합니다.
+      toggleSchedulesVisibility(null);
+    }
+
+    fullscreenModelClose.addEventListener('click', hideFullscreenModal);
+
+    function toggleSchedulesBox(displayStyle) {
+      const listAdditional = document.querySelector('.list-additional');
+      listAdditional.style.display = displayStyle;
+    }
+
+    function openSchedulesBox() {
+      toggleSchedulesBox('grid');
+      closeBtn.style.display = 'block';
+      openBtn.style.display = 'none';
+    }
+
+    function closeSchedulesBox() {
+      toggleSchedulesBox('none');
+      closeBtn.style.display = 'none';
+      openBtn.style.display = 'block';
+    }
+
+    openBtn.addEventListener('click', openSchedulesBox);
+    closeBtn.addEventListener('click', closeSchedulesBox);
+
+    function addIconForDate(date) {
+      const dayElem = document.querySelector(`.day[data-date="${date}"]`);
+      if (dayElem) {
+        const icon = dayElem.querySelector('.icon');
+        if (!icon) {
+          const iconElem = document.createElement('div');
+          iconElem.className = 'icon';
+          dayElem.appendChild(iconElem);
+        }
+      }
+    }
+
+    datesContainer.addEventListener('dblclick', function (e) {
+      if (e.target.classList.contains('current')) {
+        const clickedDate = e.target.textContent;
+        fullscreenModal.style.display = 'flex';
+
+        const selectedDateString = `${thisMonth.getFullYear()}-${('0' + (thisMonth.getMonth() + 1)).slice(-2)}-${('0' + clickedDate).slice(-2)}`;
+        addIconForDate(selectedDateString);
+      }
+    });
+
+    datesContainer.addEventListener('click', function (e) {
+      if (e.target.classList.contains('current')) {
+        const clickedDate = e.target.textContent;
+        const clickedDateString = `${thisMonth.getFullYear()}-${('0' + (thisMonth.getMonth() + 1)).slice(-2)}-${('0' + clickedDate).slice(-2)}`;
+        addIconForDate(clickedDateString);
+
+        if (selectedDate) {
+          selectedDate.classList.remove('selected');
+        }
+        selectedDate = e.target;
+        const selectedDateString = `${thisMonth.getFullYear()}-${('0' + (thisMonth.getMonth() + 1)).slice(-2)}-${('0' + selectedDate.textContent).slice(-2)}`;
+        toggleSchedulesVisibility(selectedDateString);
+        updateScheduleList(selectedDateString);
+      }
+    });
+
+    // ------------------------------- 일정 등록 유효성 검사 -------------------------------//
+
+    document.getElementById('submitDate').addEventListener('click', function () {
+      const title = dateInputTitle.value.trim();
+      const content = dateInputContent.value.trim();
+      const titleMaxLength = 15; // 제목의 최대 길이
+      const contentMaxLength = 60; // 내용의 최대 길이
+
+      if (title.length > titleMaxLength || content.length > contentMaxLength) {
+        let message = '';
+        if (title.length > titleMaxLength) {
+          message += `제목은 ${titleMaxLength}글자 이하여야 합니다.\n`;
+        }
+        if (content.length > contentMaxLength) {
+          message += `내용은 ${contentMaxLength}글자 이하여야 합니다.`;
+        }
+        alert(message);
+        return;
+      }
+
+      alert('일정 등록 완료.');
+
+
+      // ------------------------------- 일정 등록 유효성 끝 -------------------------------//
+
+      // 일정 추가 로직
+      const selectedDateString = `${thisMonth.getFullYear()}-${('0' + (thisMonth.getMonth() + 1)).slice(-2)}-${('0' + selectedDate.textContent).slice(-2)}`;
+      const schedule = { id: scheduleIdCounter++, date: selectedDateString, title, content };
+      schedules.push(schedule);
+      updateScheduleList(selectedDateString);
+      fullscreenModal.style.display = 'none';
+      dateInputTitle.value = '';
+      dateInputContent.value = '';
+      selectedDate = null;
+    });
+
+    // 스케줄 삭제 함수
+    function deleteSchedule(id) {
+      const index = schedules.findIndex(schedule => schedule.id === id);
+      if (index !== -1) {
+        // 삭제된 스케줄의 날짜를 가져옴
+        const deletedScheduleDate = schedules[index].date;
+        schedules.splice(index, 1);
+        updateScheduleList(deletedScheduleDate); // 해당 날짜의 목록을 업데이트
+      }
+    }
+
+    // 일정 목록을 업데이트하는 함수
+    function updateScheduleList(dateToUpdate) {
+      const currentDateSchedules = schedules.filter(schedule => schedule.date === dateToUpdate);
+      const listAdditional = document.querySelector('.list-additional');
+      listAdditional.innerHTML = '';
+
+      currentDateSchedules.forEach((schedule) => {
+        let divMain = document.createElement('div');
+        divMain.className = 'list-additional-main';
+
+        let divTitle = document.createElement('div');
+        divTitle.className = 'list-additional-title';
+        divTitle.textContent = schedule.title;
+
+        let divContent = document.createElement('div');
+        divContent.className = 'list-additional-content';
+        divContent.textContent = schedule.content;
+
+        let divinfo = document.createElement('div');
+        divinfo.className = 'additional-info';
+        divinfo.textContent = schedule.date;
+
+        let deleteButton = document.createElement('button');
+        deleteButton.textContent = '삭제';
+        deleteButton.className = 'delete-button';
+        deleteButton.dataset.id = schedule.id;
+        deleteButton.addEventListener('click', function () {
+          deleteSchedule(schedule.id);
+        });
+
+        divMain.appendChild(divTitle);
+        divMain.appendChild(divContent);
+        divMain.appendChild(divinfo);
+        divMain.appendChild(deleteButton);
+        listAdditional.appendChild(divMain);
+      });
+    }
+
+
+    // 캘린더 초기화 함수 
+    function calendarInit() {
+      const date = new Date();
+      const utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000);
+      const kstGap = 9 * 60 * 60 * 1000;
+      const today = new Date(utc + kstGap);
+
+      // 수정된 부분: schedules 배열을 최근 추가한 순서대로 정렬
+      schedules.sort(function (a, b) {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB - dateA; // dateB가 dateA보다 크면 내림차순
+      });
+
+      // 정렬된 배열을 사용하여 일정 목록을 업데이트 또는 표시
+      updateScheduleList();
+
+      thisMonth = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      // 이 코드를 추가하여 오늘 날짜의 일정을 필터링하고 업데이트합니다.
+      const todayDateString = `${thisMonth.getFullYear()}-${('0' + (thisMonth.getMonth() + 1)).slice(-2)}-${('0' + today.getDate()).slice(-2)}`;
+      const todaySchedules = schedules.filter(schedule => schedule.date === todayDateString);
+      updateScheduleList(todaySchedules);
+
+      renderCalendar(thisMonth);
+
+      function renderCalendar(thisMonth) {
+        const startDay = new Date(thisMonth.getFullYear(), thisMonth.getMonth(), 0);
+        const prevDate = startDay.getDate();
+        const prevDay = startDay.getDay();
+
+        const endDay = new Date(thisMonth.getFullYear(), thisMonth.getMonth() + 1, 0);
+        const nextDate = endDay.getDate();
+        const nextDay = endDay.getDay();
+
+        yearMonth.textContent = `${thisMonth.getFullYear()}.${thisMonth.getMonth() + 1}`;
+
+        const calendar = document.querySelector('.dates');
+        calendar.innerHTML = '';
+
+        // 이전 달 날짜를 렌더링
+        for (let i = prevDate - prevDay + 1; i <= prevDate; i++) {
+          calendar.innerHTML += `<div class="day prev disable">${i}</div>`;
+        }
+
+        // 이번 달 날짜를 렌더링 
+        for (let i = 1; i <= nextDate; i++) {
+          let formattedDay = ('0' + i).slice(-2);
+          let formattedDate = `${thisMonth.getFullYear()}-${('0' + (thisMonth.getMonth() + 1)).slice(-2)}-${formattedDay}`;
+          const dayElem = document.createElement('div');
+          dayElem.className = 'day current';
+          dayElem.textContent = i;
+          dayElem.setAttribute('data-date', formattedDate);
+          calendar.appendChild(dayElem);
+        }
+
+        // 다음 달 날짜를 렌더링
+        for (let i = 1; i <= (7 - nextDay === 7 ? 0 : 7 - nextDay); i++) {
+          calendar.innerHTML += `<div class="day next disable">${i}</div>`;
+        }
+
+        // 등록된 일정이 있는 날짜에 아이콘 생성
+        schedules.forEach(schedule => {
+          const dateElem = document.querySelector(`.day[data-date="${schedule.date}"]`);
+          if (dateElem) {
+            const icon = document.createElement('div');
+            icon.className = 'icon';
+            dateElem.appendChild(icon);
+          }
+        });
+
+        // 오늘 날짜를 표시
+        if (new Date().getMonth() === thisMonth.getMonth()) {
+          const todayDate = new Date().getDate();
+          const currentMonthDates = document.querySelectorAll('.dates .current');
+          currentMonthDates[todayDate - 1].classList.add('today');
+        }
+      }
+      goPrevBtn.addEventListener('click', function () {
+        thisMonth.setMonth(thisMonth.getMonth() - 1);
+        renderCalendar(thisMonth);
+        selectedDate = null;
+        // 이전/다음 버튼 클릭시 모든 스케줄 숨기기
+        toggleSchedulesVisibility(null);
+      });
+
+      goNextBtn.addEventListener('click', function () {
+        thisMonth.setMonth(thisMonth.getMonth() + 1);
+        renderCalendar(thisMonth);
+        selectedDate = null;
+        // 이전/다음 버튼 클릭시 모든 스케줄 숨기기
+        toggleSchedulesVisibility(null);
+      });
+      openSchedulesBox();
+    }
+
+    calendarInit();
+
+  </script>
+</body>
+
+</html>

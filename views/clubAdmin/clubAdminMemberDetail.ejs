@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>회원 등록</title>
+  <style>
+    #memberOut{
+      background-color: red;
+    }
+
+  </style>
+  <link rel="stylesheet" href="/style.css">
+ 
+  
+</head>
+
+<body>
+
+  <%- include('../component/header')%>
+   <div class="container">
+     <button type="button" onclick="showProfile()" class="btn btn-ghost">프로필 보기</button>
+       <div class="input">
+      <label for="name">이름</label>
+      <input id="name" class="textField" value="<%= userInfo.name %>"></input></div>
+      <div class="input">
+      <label for="motivation">지원동기</label>
+      <input id="motivation" class="textField" value="<%= data.motivation %>" readonly></input></div>
+      <div class="input">
+      <label for="introduction">자기소개</label>
+      <input id="introduction" class="textField" value="<%= data.introduction %>" readonly></input></div>
+     
+      <div class="cta">
+        <button id="memberOut" class="btn btn-primary "  onclick="outMember('<%=data.userid_num%>')">강퇴</button>
+      </div>
+      
+       </div>
+   </div>
+
+<script>
+  console.log('<%=club_id%>')
+  async function outMember(userid_num){
+if(confirm('정말 강퇴하시겠습니까?')){
+  try {
+          const res = await axios({
+            method: "DELETE",
+            url: `/clubAdminMemberDetail/<%=club_id%>/${userid_num}`,
+            data: {
+
+            },
+          });
+          console.log(res)
+          window.location.href='/clubAdminMemberList/<%=club_id%>'
+        } catch (error) {
+          console.log("clubAdminMemberDetail 에서 axios delete error > ", error);
+        }
+}else{
+  
+  return;
+}
+   
+
+    
+  }
+
+  const showProfile=()=>{
+    window.location.href='/mypageProfile/<%= userInfo.nickname %>'
+  }
+</script>
+</body>
+
+</html>
+

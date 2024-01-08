@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>동아리 개설</title>
+    <link rel="stylesheet" href="/style.css" />
+  
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      #city,#district{
+        width: 49%;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <%- include('../component/header')%>
+
+
+    <main class="container">
+      <form name="create-club-form" class="create-club-form" onsubmit="createClub(event)">
+        <div class="input">
+          <label for="club-name">동아리 이름</label>
+          <input type="text"  class="textField" id="club-name" placeholder="" required>
+          <div  class="helpText" id="name-error"></div>
+        </div>
+        
+
+        <div class="input">
+          <label for="club-description">동아리 설명</label>
+          <input type="text" class="textField" id="club-description" placeholder="" required>
+          <div class="helpText" id="description-error"></div>
+        </div>
+        
+
+  
+        <div class="input">
+          <label for="category">분야</label>
+          <input type="text" class="textField" id="category" placeholder="" required>
+          <div class="helpText" id="field-error"></div>
+        </div>
+  
+        <div class="input">
+          <label for="keywords">키워드</label>
+          <div class="helpText">쉼표(,)로 구분해서 작성해주세요</div>
+          <input type="text" class="textField" id="keywords" placeholder="" required>
+          
+        </div>
+
+        <div class="input">
+          <label for="member-limit">인원 제한</label>
+          <input type="number" class="textField" id="member-limit" placeholder="" required>
+        </div>
+  
+        <div class="input">
+          <label for="location">활동 지역</label>
+          <div class="location-input">
+          <select  id="city" class="textField" required>
+            <option value="서울">서울시</option>
+          </select>
+          <select  id="district"  class="textField" required >
+   
+          <option value="마포">마포구</option>
+          <option value="종로">종로구</option>
+          <option value="중">중구</option>
+          <option value="용산">용산구</option>
+          <option value="성동">성동구</option>
+          <option value="노원">노원구</option>
+          <option value="동대문">동대문구</option>
+          <option value="중랑">중랑구</option>
+          <option value="성북">성북구</option>
+          <option value="강북">강북구</option>
+          <option value="도봉">도봉구</option>
+          <option value="은평">은평구</option>
+          <option value="서대문">서대문구</option>
+          <option value="양천">양천구</option>
+          <option value="강서">강서구</option>
+          <option value="금천">금천구</option>
+          <option value="영등포">영등포구</option>
+          <option value="동작">동작구</option>
+          <option value="관악">관악구</option>
+          <option value="서초">서초구</option>
+          <option value="강남">강남구</option>
+          <option value="송파">송파구</option>
+          <option value="강동">강동구</option>
+          <option value="서초">서초구</option>
+          <option value="노원">노원구</option>
+  
+  
+          </select>
+        </div>
+        </div>
+        
+        
+        <div class="cta">
+          <button type="submit" class="btn btn-primary">동아리 만들기</button>
+        </div>
+        
+      </form>
+    </main>
+
+
+    <script>
+      async function createClub(event) {
+        event.preventDefault();
+
+        const createClubForm = document.forms["create-club-form"];
+        console.log(createClubForm);
+
+        let clubName = createClubForm.elements["club-name"].value;
+        console.log(clubName);
+        let clubDescription = createClubForm.elements['club-description'].value;
+        let clubCategory = createClubForm.elements["category"].value;
+        let clubMemberLimit = createClubForm.elements["member-limit"].value;
+        let clubKeywords = createClubForm.elements["keywords"].value;
+        let clubCity = createClubForm.elements["city"].value;
+        let clubDistrict = createClubForm.elements["district"].value;
+
+        
+        // clubName 유효성 검사 -> 한글 있으면 최대 15자
+        const maxKoreanLength = 15;
+        const maxEnglishLength = 50;
+
+        const NameMaxLength = (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(clubName)) ? maxKoreanLength : maxEnglishLength;
+        console.log(NameMaxLength);
+
+        if(clubName.length > NameMaxLength){
+          let nameError=document.querySelector('#name-error');
+          console.log(nameError)
+
+          nameError.innerText='동아리이름은 한글 최대 15자, 영어 최대 50자까지 가능합니다';
+          return;
+        }
+
+        // 분야 유효성 검사
+        const fieldMaxLength = 10;
+
+        if(clubCategory.length > fieldMaxLength){
+          let fieldError=document.querySelector('#field-error');
+
+
+          fieldError.innerText='분야는 최대 10글자로 입력하세요';
+        }
+
+
+          // 설명 유효성 검사
+        const descriptionMaxLength = 200;
+
+      if(clubDescription.length > descriptionMaxLength){
+      let descriptionError=document.querySelector('#description-error');
+      descriptionError.innerText='설명은 최대 200글자로 입력하세요';
+
+
+          return;
+        }
+
+        if(clubKeywords.length>=0){
+          let sign = 'ok'
+
+        }
+
+        try {
+          const res = await axios({
+            method: "POST",
+            url: "/createClub",
+            data: {
+              club_name: clubName,
+              leader_id: 1,
+              limit: clubMemberLimit,
+              location: `${clubCity}시 ${clubDistrict}구`,
+              field: clubCategory,
+              keyword: clubKeywords,
+              description: clubDescription
+            },
+          });
+          console.log(res);
+          window.location.href=`/clubMain`
+        } catch (error) {
+          console.log("createClub 에서 axios error > ", error);
+        }
+      }
+    </script>
+  </body>
+</html>

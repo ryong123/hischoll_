@@ -1,0 +1,1079 @@
+/* CSS RESET */
+
+@charset "utf-8";
+/***
+    The new CSS reset - version 1.8.5 (last updated 14.6.2023)
+    GitHub page: https://github.com/elad2412/the-new-css-reset
+***/
+
+/*
+    Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
+    - The "symbol *" part is to solve Firefox SVG sprite bug
+    - The "html" attribute is exclud, because otherwise a bug in Chrome breaks the CSS hyphens property (https://github.com/elad2412/the-new-css-reset/issues/36)
+ */
+*:where(
+    :not(
+        html,
+        iframe,
+        canvas,
+        img,
+        svg,
+        video,
+        audio,
+        input[type='checkbox'],
+        input[type='radio']
+      ):not(svg *, symbol *)
+  ) {
+  all: unset;
+  display: revert;
+}
+
+/* Preferred box-sizing value */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Reapply the pointer cursor for anchor tags */
+a,
+button {
+  cursor: revert;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+/* For images to not be able to exceed their container */
+img {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+
+/* removes spacing between cells in tables */
+table {
+  border-collapse: collapse;
+}
+
+/* Safari - solving issue when using user-select:none on the <body> text input doesn't working */
+input,
+textarea {
+  -webkit-user-select: auto;
+}
+
+/* revert the 'white-space' property for textarea elements on Safari */
+textarea {
+  white-space: revert;
+}
+
+/* minimum style to allow to style meter element */
+meter {
+  -webkit-appearance: revert;
+  appearance: revert;
+}
+
+/* preformatted text - use only for this feature */
+:where(pre) {
+  all: revert;
+}
+
+/* reset default text opacity of input placeholder */
+::placeholder {
+  color: unset;
+}
+
+/* remove default dot (•) sign */
+::marker {
+  content: initial;
+}
+
+/* fix the feature of 'hidden' attribute.
+   display:revert; revert to element instead of attribute */
+:where([hidden]) {
+  display: none;
+}
+
+/* revert for bug in Chromium browsers
+   - fix for the content editable attribute will work properly.
+   - webkit-user-select: auto; added for Safari in case of using user-select:none on wrapper element */
+:where([contenteditable]:not([contenteditable='false'])) {
+  -moz-user-modify: read-write;
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-line-break: after-white-space;
+  -webkit-user-select: auto;
+}
+
+/* apply back the draggable feature - exist only in Chromium and Safari */
+:where([draggable='true']) {
+  -webkit-user-drag: element;
+}
+
+/* Revert Modal native behavior */
+:where(dialog:modal) {
+  all: revert;
+}
+
+/* input:number disable spinner */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* 스타일 정의 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+:root {
+  --spacing-1: 12px;
+  --spacing-2: 16px;
+  --spacing-3: 14px;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+
+  --color-ghost-50: #eff6ff;
+  --color-ghost-100: #dbeafe;
+
+  font-family: 'Pretendard Variable', Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-gray-800);
+    line-height: 3rem;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-gray-500);
+  }
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 600px;
+}
+
+.container {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  height: fit-content;
+  margin-top: 100px;
+  margin-bottom: 150px;
+}
+
+.row2 {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+}
+
+.icon {
+  stroke: var(--color-gray-500);
+  stroke-width: 2;
+}
+
+img {
+  border-radius: 4px;
+}
+
+/* 버튼 */
+.cta {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  gap: 8px;
+  width: 100%;
+  padding: 20px;
+  bottom: 0px;
+  transform: translate(-20px, 0);
+  max-width: 600px;
+  background: linear-gradient(rgba(255, 255, 255, 0) 5%, #fff 30%);
+  z-index: 99;
+}
+
+.btn {
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem;
+}
+
+.btn-sm {
+  cursor: pointer;
+  width: fit-content;
+  font-size: 16px;
+  text-align: center;
+  padding: 8px 12px;
+}
+
+/* btn-primary */
+.btn-primary {
+  background-color: var(--color-primary-500);
+  color: var(--color-primary-50);
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+.btn-primary:active {
+  background-color: var(--color-primary-600);
+}
+.btn-primary[disabled] {
+  background-color: var(--color-primary-200);
+}
+
+/* btn-secondary */
+.btn-secondary {
+  background-color: white;
+  border: solid 1px var(--color-primary-500);
+  color: var(--color-primary-500);
+  border-radius: 4px;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+.btn-secondary:active {
+  border-color: var(--color-primary-600);
+  background-color: var(--color-primary-50);
+}
+.btn-secondary[disabled] {
+  border-color: var(--color-primary-200);
+}
+
+.btn-neutral {
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: var(--color-gray-400);
+  border: solid 1px var(--color-gray-400);
+  color: var(--color-gray-50);
+  border-radius: 4px;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+.btn-neutral:active {
+  background-color: var(--color-gray-500);
+}
+.btn-neutral[disabled] {
+  background-color: var(--color-gray-200);
+}
+
+.btn-ghost {
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: var();
+  border: 1px solid var(--color-gray-200);
+  color: var(--color-gray-400);
+  border-radius: 4px;
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+}
+.btn-ghost:active {
+  background-color: var(--color-gray-100);
+}
+.btn-ghost[disabled] {
+  background-color: white;
+  color: var(--color-gray-300);
+}
+
+.btn-create {
+  padding: 0;
+  width: 60px;
+  height: 60px;
+  background-color: var(--color-primary-500);
+  color: white;
+  border-radius: 50%;
+  line-height: 0px;
+
+  font-size: 1em;
+  text-align: center;
+  position: fixed;
+  right: 60px;
+  bottom: 60px;
+}
+.btn-create:active {
+  background-color: var(--color-primary-600);
+}
+.btn-create:hover {
+  background-color: var(--color-primary-600);
+  cursor: pointer;
+}
+
+.btn-warning {
+  background-color: var(--color-red-500);
+  color: var(--color-red-50);
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+
+.btnCenter {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* 텍스트필드 - input */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+label {
+  padding: 4px 0;
+  color: var(--color-gray-400);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.keyword {
+  padding: 8px 0;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.input .helpText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-gray-400);
+  font-size: 0.9rem;
+}
+
+.helpText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-gray-400);
+  font-size: 0.9rem;
+}
+
+.textField {
+  padding: 16px 20px;
+  background-color: white;
+  border: solid 1px var(--color-gray-200);
+  font-size: 1rem;
+  border-radius: 4px;
+  width: 100%;
+  /* color: var(--color-gray-700); */
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+  /* background: url(icons/search.svg) no-repeat scroll right 12px center; */
+}
+.textField::placeholder {
+  color: var(--color-gray-400);
+}
+
+.textField:not(:placeholder-shown) {
+  color: var(--color-gray-600);
+}
+.textField:focus {
+  border: solid 1.5px var(--color-primary-500);
+  transition: all 0.2s;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+
+.textField:disabled {
+  border: solid 1.5px var(--color-gray-100);
+}
+
+.textField .error {
+  border: solid 1.5px var(--color-red-500);
+}
+
+.file-upload-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-upload-button {
+  background-color: var(--color-primary-500);
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.file-upload-text {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+#preview {
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+}
+
+/*# input[type='checkbox'] */
+input[type='checkbox'] {
+  display: none;
+}
+
+input[type='checkbox'] + label {
+  cursor: pointer;
+  user-select: none;
+}
+
+input[type='checkbox'] + label > span {
+  vertical-align: middle;
+  padding-left: 8px;
+}
+
+input[type='checkbox'] + label:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-gray-300);
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+input[type='checkbox']:checked + label:before {
+  background-image: url(./icons/check.svg);
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: 50%;
+  color: white;
+  border: none;
+  background-color: var(--color-primary-500);
+}
+
+/*# 헤더 CSS */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffffbc;
+  z-index: 500;
+  /* padding: 0 20px; */
+  padding: 4px 0;
+  box-sizing: border-box;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.header.bg-white {
+  background-color: white;
+}
+
+.header i {
+  color: var(--color-gray-400);
+}
+
+.navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  z-index: 500;
+  align-items: center;
+}
+
+.logo img {
+  cursor: pointer;
+}
+
+.logo:hover {
+  transform: scale(1.04) rotateY(-20deg);
+  transition: all 0.4s;
+}
+
+.menu-bar {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  gap: 20px;
+  color: var(--color-gray-500);
+
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.menu-bar a:hover {
+  color: var(--color-primary-500);
+  transition: 0.5s all;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  /* flex-basis: 200px; */
+  justify-content: end;
+  /* flex-grow: 1;
+  text-align: center; */
+}
+
+.header-profile.desktop {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  /* flex-basis: content; */
+  flex-grow: 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gray-400);
+}
+
+.header-profile.mobile {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gray-400);
+}
+
+.profileImg-container {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-self: center;
+  color: var(--color-gray-500);
+}
+
+.menu-icon,
+.right-icon,
+.close-menu {
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.close-menu {
+  position: relative;
+  display: none;
+  height: 48px;
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+.sidebar {
+  display: none;
+  position: fixed;
+  top: 56.8px;
+  left: 0;
+  height: 0px;
+  background-color: #ffffff;
+  text-align: center;
+  z-index: 500;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  transition: height 0.5s;
+}
+
+.sidebar a {
+  width: 100%;
+  font-size: 16px;
+  color: var(--color-gray-600);
+  display: flex;
+  padding: 12px 0;
+  flex-direction: column;
+  transition: all 0.5s;
+}
+
+.sidebar a:hover {
+  color: var(--color-primary-500);
+  transition: height 0.5s;
+}
+
+.sidebar.active {
+  /* position: relative; */
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  z-index: 500;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.5s;
+}
+
+.menu-buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.shade {
+  position: fixed;
+  top: 56.8px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9;
+  background-color: #0000008e;
+  backdrop-filter: blur(5px);
+}
+
+@media screen and (max-width: 800px) {
+  .header {
+    height: fit-content;
+    padding: 4px 8px;
+  }
+  .menu-bar,
+  .nav-btn,
+  .header-profile.desktop,
+  .logo {
+    display: none;
+  }
+  .title {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+@media screen and (min-width: 801px) {
+  .header {
+    padding: 12px 20px;
+  }
+  .menu-icon,
+  .settings-icon,
+  .close-menu,
+  .sidebar,
+  .sidebar.active,
+  .shade,
+  .title,
+  .right-icon {
+    display: none;
+  }
+}
+
+/*# 리스트 목록 스타일 ( 제목, 내용 / 부가내용 X (날짜, 시간등) */
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 12px; */
+}
+.list {
+  display: flex;
+  width: 100%;
+  padding: 24px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 4px;
+  border-bottom: 1px solid var(--color-gray-200);
+  cursor: pointer;
+  /* default_shadow */
+  /* box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1); */
+}
+.list-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-gray-600);
+}
+.list-content {
+  font-size: 0.9rem;
+  color: var(--color-gray-400);
+}
+
+.emptyFull {
+  display: flex;
+  height: calc(100vh - 250px);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-gray-400);
+  line-height: 1.4;
+}
+
+.listEmpty {
+  display: flex;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-gray-400);
+  line-height: 1.4;
+}
+
+/*# 여기는 피그마 input  시작  */
+.search-container {
+  width: 100%;
+  padding: 20px;
+  border-radius: 50px;
+}
+
+.label {
+  color: var(--color-gray-500);
+  font-size: 15px;
+  margin-bottom: 12p;
+}
+
+.search-bar {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+}
+.search-input::placeholder {
+  color: var(--color-gray-400);
+}
+.search-input:not(:placeholder-shown) {
+  color: var(--color-gray-700);
+}
+
+.search-icon {
+  padding-right: 15px;
+  color: #aaa;
+  font-size: 3em;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-option {
+  background-color: white;
+  border: none;
+  outline: none;
+  padding: 10px 30px;
+  margin-right: 25px;
+  color: #aaa;
+  font-size: 15px;
+  margin-bottom: 11px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar-option {
+  max-width: 50%;
+
+  text-align: center;
+}
+
+.menuContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.menuItem {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 16px 12px;
+  color: var(--color-gray-600);
+}
+
+/* 여기는 피그마 input 끝 */
+
+/* 여기는 피그마 radio 시작 */
+.search-option-container {
+  width: 100%;
+  padding: 20px;
+}
+/* 여기는 피그마 radio 끝 */
+
+/* 2번 list 시작(.list listTwoLineShadow */
+.list-additional {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.list-additional-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.list-additional-title {
+  align-self: stretch;
+  font-size: var(--spacing-2);
+  color: var(--color-gray-600);
+}
+
+.list-additional-content {
+  align-self: stretch;
+  font-size: 14px;
+  color: var(--color-gray-400);
+}
+
+.additional-info {
+  font-size: var(--spacing-3);
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: #6b7280;
+}
+
+/* 2번 list 끝(.list listTwoLineShadow */
+
+/* 3번 list (.list listCommentLike) 시작 */
+.content-box {
+  background-color: #ffffff;
+  padding: 15px;
+  border-bottom: 1px solid #aaa;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.content,
+.thumbs-up,
+.timestamp {
+  margin-bottom: 10px;
+}
+
+.content {
+  font-size: 16px;
+  color: #666666;
+}
+
+.thumbs-up {
+  display: flex;
+  align-items: center;
+}
+
+.thumb-icon {
+  font-size: 24px;
+}
+
+.thumb-count {
+  font-size: 18px;
+  margin-left: 5px;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #999999;
+  text-align: right;
+}
+
+/* 3번 list (.list listCommentLike) 끝 */
+
+/* badge */
+.badge-container {
+  display: flex;
+  gap: 10px;
+}
+
+.badge-button {
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 10px 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  font-size: 16px;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.badge-button .badge-count {
+  margin-left: 5px;
+}
+
+.badge-button:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.badge-button.active {
+  background-color: #e7f0fd;
+  color: #007bff;
+  border-color: #007bff;
+}
+
+/* hashtag */
+/* test용 코드(수정 필요)---------------------------------------------- */
+.hashtag {
+  padding: 8px 12px;
+  margin-right: 8px;
+  border-radius: 4px;
+  background-color: var(--color-primary-50);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-primary-500);
+}
+
+.comment-input {
+  padding: 10px;
+  margin-right: 8px;
+  border: 2px solid #d1d3d4;
+  font-size: 16px;
+  outline: none;
+}
+
+.comment-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #4285f4;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  outline: none;
+}
+
+.comment-input:focus {
+  border-color: #4285f4;
+}
+
+.comment-button:hover {
+  background-color: #357ae8;
+}
+.main-container {
+  background-color: #357ae8;
+}
+/* 수정ㅇㅇ */
+.myclub-box .container-title {
+}
+
+.club-list {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  /* default_shadow */
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+}
+.club-list img {
+  width: 100%;
+  height: 130px;
+}
+.club-box {
+  padding: 10px 20px;
+}
+
+.description {
+  padding-top: 15px;
+}
+
+.card-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0px;
+  padding: 15px;
+}
+.card-image {
+  width: 50%;
+  height: 100%;
+  background-image: url('your-image-path.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.card-content {
+  padding: 20px;
+  width: 50%;
+}
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.card-text {
+  font-size: 18px;
+  margin-bottom: 5px;
+}

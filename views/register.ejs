@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>하이스쿨 - 회원가입</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      .search-results {
+        position: absolute;
+        width: 100%;
+        margin-top: 90px;
+        cursor: pointer;
+        border: 1px solid var(--color-gray-200);
+        border-radius: 4px;
+        background-color: white;
+        overflow-y: scroll;
+        height: 200px;
+        z-index: 2;
+      }
+
+      .no-results {
+        padding: 12px 16px;
+        text-align: center;
+        color: var(--color-gray-500);
+      }
+
+      .schoolList {
+        padding: 12px 16px;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .schoolList h3 {
+        font-size: 16px;
+        color: var(--color-gray-600);
+        font-weight: 500;
+      }
+
+      .schoolList span {
+        font-size: 14px;
+        color: var(--color-gray-400);
+      }
+
+      .schoolList:hover {
+        transition: all 0.5s;
+        background-color: var(--color-gray-100);
+      }
+
+      #preview {
+        width: 100px;
+        border-radius: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./component/header')%>
+    <div class="container">
+      <form name="register">
+        <div class="input">
+          <label for="userid">아이디</label>
+          <input type="text" id="userid" class="textField" value="admin" />
+          <button
+            type="button"
+            onclick="generateRandomId()"
+            style="
+              border: 1px solid var(--color-primary-500);
+              color: var(--color-primary-500);
+              width: fit-content;
+              padding: 8px 16px;
+            "
+          >
+            랜덤 아이디 생성
+          </button>
+        </div>
+
+        <div class="input">
+          <label for="nickname">닉네임</label>
+          <input type="text" id="nickname" class="textField" value="" />
+          <button
+          type="button"
+          onclick="generateRandomNickname()"
+          style="
+            border: 1px solid var(--color-primary-500);
+            color: var(--color-primary-500);
+            width: fit-content;
+            padding: 8px 16px;
+          "
+        >
+          랜덤 닉네임 생성
+        </button>
+        </div>
+
+        <div class="input">
+          <label for="name">이름</label>
+          <input type="text" id="name" class="textField" value="관리자" />
+        </div>
+
+        <div class="input">
+          <label for="fileUpload">프로필 이미지</label>
+          <input
+            name="myImage"
+            type="file"
+            id="fileUpload"
+            accept="image/*"
+            onchange="readURL(this); uploadToClient();"
+            class="file-upload-input"
+          />
+          <!-- <button class="file-upload-button">이미지 선택</button> -->
+          <span class="file-upload-text">파일을 선택하세요</span>
+          <img id="preview" src="" alt="" />
+        </div>
+
+        <div class="input">
+          <label for="school">학교</label>
+          <input
+            type="text"
+            id="school"
+            class="textField"
+            oninput="showResult(); searchSchool();"
+            onfocus="resetSchoolInput();"
+            value="가락고등학교"
+          />
+          <div id="schoolSearchResults" class="search-results hidden"></div>
+        </div>
+        <div class="row2">
+          <div class="input">
+            <label for="grade">학년</label>
+            <input
+              type="number"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              id="grade"
+              class="textField noscroll"
+              value="1"
+            />
+          </div>
+          <div class="input">
+            <label for="classid">반</label>
+            <input
+              type="number"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              id="classid"
+              class="textField noscroll"
+              value="2"
+            />
+          </div>
+        </div>
+        <div class="input">
+          <label for="birthday">생일</label>
+          <input
+            type="date"
+            id="birthday"
+            class="textField"
+            value="2000-10-10"
+          />
+        </div>
+        <div class="input">
+          <label for="phone">전화번호</label>
+          <input type="tel" id="phone" class="textField" />
+          <span class="helpText"
+            ><i data-feather="info" width="16"></i>- 를 제외하고
+            입력해주세요</span
+          >
+        </div>
+
+        <div class="input">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            class="textField"
+            value="12341234"
+          />
+          <span class="helpText"
+            ><i data-feather="info" width="16"></i>8자리 이상, 16자리 이하</span
+          >
+        </div>
+        <div class="input">
+          <label for="passwordCheck">비밀번호 확인</label>
+          <input
+            type="password"
+            id="passwordCheck"
+            class="textField"
+            value="12341234"
+          />
+        </div>
+      </form>
+
+      <div class="cta">
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="handleRegister()"
+        >
+          회원가입
+        </button>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+    </script>
+
+    <!-- 더미 데이터 생성 : 나중에 지울 것 -->
+    <script>
+      function generateRandomPhoneNumber() {
+        let phoneNumber = "";
+        for (let i = 0; i < 8; i++) {
+          phoneNumber += Math.floor(Math.random() * 10);
+        }
+        return phoneNumber;
+      }
+
+      document.getElementById("phone").value =
+        "010" + generateRandomPhoneNumber();
+
+        
+      function generateRandomId() {
+        const randomNumber = Math.floor(Math.random() * 1000);
+        document.getElementById("userid").value = "user" + randomNumber;
+      }
+
+      function generateRandomNickname() {
+        const surnames = [
+          "강력한",
+          "엄청난",
+          "대단한",
+          "귀여운",
+          "푸른",
+          "배고픈",
+          "화난",
+          "철학적인",
+          "밝은",
+          "예쁜",
+        ];
+        const names = [
+        "호랑이",
+        "비버",
+        "강아지",
+        "부엉이",
+        "여우",
+        "치타",
+        "문어",
+        "고양이",
+        "미어캣",
+        "다람쥐",
+        "라마",
+        "판다"
+        ];
+
+        const randomNumber = Math.floor(Math.random() * 100);
+
+        const randomSurname =
+          surnames[Math.floor(Math.random() * surnames.length)];
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        document.getElementById('nickname').value = randomSurname + randomName + randomNumber
+      }
+
+      generateRandomNickname()
+
+      function generateRandomKoreanName() {
+        const surnames = [
+          "김",
+          "이",
+          "박",
+          "최",
+          "정",
+          "강",
+          "조",
+          "윤",
+          "장",
+          "임",
+        ];
+        const names = [
+          "민준",
+          "서연",
+          "예준",
+          "수아",
+          "지호",
+          "서윤",
+          "하준",
+          "아린",
+          "준서",
+          "하은",
+        ];
+
+        const randomSurname =
+          surnames[Math.floor(Math.random() * surnames.length)];
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        return randomSurname + randomName; // 성과 이름을 조합
+      }
+
+      // 생성된 랜덤 이름을 입력 필드에 설정
+      document.getElementById("name").value = generateRandomKoreanName();
+
+      document
+        .getElementById("fileUpload")
+        .addEventListener("change", function () {
+          var fileName = this.value.split("\\").pop();
+          document.querySelector(".file-upload-text").textContent = fileName
+            ? fileName
+            : "파일을 선택하세요";
+        });
+    </script>
+
+    <!--# 프로필 미리보기 -->
+    <script>
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("preview").src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById("preview").src = "";
+        }
+      }
+    </script>
+
+    <!--# 프로필 이미지 업로드 -->
+    <script>
+      let createObjectURL = null;
+      let image = null;
+      const uploadFiles = document.querySelector("#fileUpload");
+      let uploadedFileUrl = "";
+
+      function uploadToClient(e) {
+        if (createObjectURL) {
+          URL.revokeObjectUrl(createObjectURL);
+        }
+
+        console.log('282 : uploadedFiles', uploadFiles);
+        if (uploadFiles.files && uploadFiles.files[0]) {
+          const i = uploadFiles.files[0];
+          image = i;
+          console.log('286 image', image);
+          createObjectURL = URL.createObjectURL(i);
+        }
+      }
+
+      async function uploadImgClient() {
+        console.log('uploadImgClient 실행');
+        try {
+          const result = await axios({
+            method: "POST",
+            url: "/s3upload",
+            data: {
+              name:
+                // "client/" +
+                Math.random().toString(36).substring(2, 32),
+              type: image.type,
+            },
+          });
+
+          const axiosResult = result;
+          console.log('axiosResult : ', axiosResult)
+          const signedUrl = axiosResult.data;
+          console.log("signedURL", signedUrl);
+
+          const uploadRes = await axios({
+            method: "PUT",
+            url: signedUrl,
+            data: image,
+            headers: {
+              "Content-Type": image.type,
+            },
+          });
+          console.log("uploadRes : ", uploadRes.config.url);
+          uploadedFileUrl = uploadRes.config.url;
+
+          // console.log('first uploadedfileurl', uploadedFileUrl)
+          return uploadedFileUrl;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    </script>
+
+    <script>
+      let allSchoolData = [];
+
+      function showResult() {
+        document
+          .getElementById("schoolSearchResults")
+          .classList.remove("hidden");
+      }
+
+      async function loadSchoolData() {
+        try {
+          const response = await axios.get(
+            "https://open.neis.go.kr/hub/schoolInfo?ATPT_OFCDC_SC_CODE=B10&SCHUL_KND_SC_NM=%EA%B3%A0%EB%93%B1%ED%95%99%EA%B5%90&Type=json&pIndex=1&pSize=1000&KEY=bc9bdb6745984db1894cbdd79cc0f628"
+          );
+          allSchoolData = response.data.schoolInfo[1].row;
+          // console.log(allSchoolData);
+        } catch (error) {
+          console.error("학교 정보 가져오기 실패: ", error);
+        }
+      }
+
+      async function searchSchool() {
+        const searchText = document
+          .getElementById("school")
+          .value.toLowerCase();
+        const filteredSchools = allSchoolData.filter((school) =>
+          school.SCHUL_NM.toLowerCase().includes(searchText)
+        );
+
+        const resultsContainer = document.getElementById("schoolSearchResults");
+        if (filteredSchools.length === 0) {
+          resultsContainer.innerHTML = `<div class='no-results'>검색 결과가 없습니다</div>`;
+        } else {
+          resultsContainer.innerHTML = filteredSchools
+            .map(
+              (school) =>
+                `<div class="schoolList" onclick="selectSchool('${school.SCHUL_NM}')">
+            <h3>${school.SCHUL_NM}</h3>
+            <span>${school.ORG_RDNMA}</span>
+          </div>`
+            )
+            .join("");
+        }
+      }
+
+      function selectSchool(schoolName) {
+        document.getElementById("school").value = schoolName;
+        document.getElementById("schoolSearchResults").innerHTML = "";
+        document.getElementById("schoolSearchResults").classList.add("hidden");
+      }
+
+      function resetSchoolInput() {
+        document.getElementById("school").value = "";
+        document.getElementById("schoolSearchResults").innerHTML = "";
+        document.getElementById("schoolSearchResults").classList.add("hidden");
+        displayAllSchools();
+      }
+
+      function displayAllSchools() {
+        const resultsContainer = document.getElementById("schoolSearchResults");
+        resultsContainer.innerHTML = allSchoolData
+          .map(
+            (school) =>
+              `<div class="schoolList" onclick="selectSchool('${school.SCHUL_NM}')">
+          <h3>${school.SCHUL_NM}</h3>
+          <span>${school.ORG_RDNMA}</span>
+        </div>`
+          )
+          .join("");
+        showResult();
+      }
+
+      window.addEventListener("load", loadSchoolData);
+
+      document.addEventListener("click", function (event) {
+        const schoolInput = document.getElementById("school");
+        const searchResults = document.getElementById("schoolSearchResults");
+        const withinBoundaries =
+          event.composedPath().includes(schoolInput) ||
+          event.composedPath().includes(searchResults);
+
+        if (!withinBoundaries) {
+          searchResults.classList.add("hidden");
+        }
+      });
+
+      const form = document.forms["register"];
+
+      async function handleRegister() {
+        const uploadedFileOriginUrl = await uploadImgClient();
+        console.log('따끈따끈한 업로드된 파일 경로', uploadedFileOriginUrl);
+
+        const userid = form.userid.value;
+        const name = form.name.value;
+        const school = form.school.value;
+        const grade = form.grade.value;
+        const classid = form.classid.value;
+        const birthday = form.birthday.value;
+        const phone = form.phone.value;
+        let profile_img;
+
+        if (uploadedFileOriginUrl) {
+          console.log('presignedURL 있어요')
+          // const parts = uploadedFileOriginUrl.split("?");
+          // const uploadedFileUrl = parts[0];
+          const parts = uploadedFileOriginUrl.split('/');
+          profile_img = parts[parts.length - 1].split('?')[0];
+        } else {
+          console.log('presignedURL 없어요')
+          profile_img = ''
+        }
+
+        console.log("profile_img", profile_img);
+
+        try {
+          const result = await axios({
+            method: "POST",
+            url: "/register",
+            headers: {
+              // "Content-Type": "application/formData",
+            },
+            data: {
+              userid: form.userid.value,
+              name: form.name.value,
+              school: form.school.value,
+              grade: form.grade.value,
+              classid: form.classid.value,
+              birthday: form.birthday.value,
+              phone: form.phone.value,
+              password: form.password.value,
+              nickname: form.nickname.value,
+              profile_img,
+            },
+          });
+          console.log(result);
+          console.log(result.data.success);
+          if (result.data.success === true) {
+            alert("회원가입 성공");
+            document.location.href = "/login";
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      // number 스크롤 방지
+      document.addEventListener("wheel", function (event) {
+        if (
+          document.activeElement.type === "number" &&
+          document.activeElement.classList.contains("noscroll")
+        ) {
+          document.activeElement.blur();
+        }
+      });
+    </script>
+  </body>
+</html>

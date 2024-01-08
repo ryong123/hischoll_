@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+   <!-- axios CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+   <!-- font-awesome -->
+   <script src="https://kit.fontawesome.com/6206d712ce.js" crossorigin="anonymous"></script>
+   <!-- 아이콘 CDN feather -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js"
+      integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+   <!-- jquery CDN -->
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+      integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+
+   <!-- style.css -->
+   <link rel="stylesheet" href="../../static/style.css">
+
+   <style>
+      #motivation,
+      #introduction {
+         height: 11rem;
+      }
+
+      .textNum {
+         display: flex;
+         justify-content: space-between;
+
+      }
+
+      .heart-active {
+         color: red;
+         /* 또는 원하는 색상 */
+      }
+
+      .flexbox {
+         width: 100%;
+         display: flex;
+         justify-content: flex-end;
+
+      }
+
+      .myclubPostMain {
+         display: flex;
+         justify-content: flex-end;
+         margin-left: 10px;
+      }
+
+
+      .comment-section {
+         margin: 30px 0px;
+         width: 100%;
+      }
+
+      .commentList {
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+      }
+
+
+      .list-time {
+         width: 100%;
+         display: flex;
+         justify-content: flex-end;
+      }
+
+      .submit {
+         margin-top: 15px;
+      }
+
+      .name {
+         font-size: 1.2rem;
+         font-weight: bold;
+         margin-top: 25px;
+         margin-bottom: 5px;
+      }
+
+      .post-detail {
+         overflow-wrap: break-word;
+         margin-bottom: 100px;
+      }
+
+      .content-time {
+         width: 100%;
+         display: flex;
+         justify-content: flex-end;
+         margin: 6px 0px;
+      }
+
+      .comment-input {
+         margin-top: 18px;
+      }
+
+      .name {
+         margin-bottom: 50px;
+      }
+
+      .no-comment {
+         width: 100%;
+         text-align: center;
+         margin-top: 100px;
+      }
+   </style>
+</head>
+
+<body>
+   <%- include('../component/header') %>
+      <main class="container">
+
+         <div class="board">
+            <!-- 게시글 세부 내용 -->
+            <div class="post-detail">
+
+               <div class="name list">
+                  <span>
+                     <%= data.name %>
+                  </span>
+               </div>
+
+               <h2>
+                  <%= data.title %>
+               </h2>
+
+
+               <p class="content">
+                  <%= data.content %>
+                     <!-- <i class="like-btn" onclick="likeBtn()">좋아요</i> -->
+               </p>
+
+               <div class="postImages">
+                  <% for(i=0; i < postImages.length; i++) { %>
+                     <img src="<%= postImages[i] %>" alt="">
+                     <% } %>
+               </div>
+            </div>
+            <div class="flexbox">
+               <button class="btn-sm btn-primary myclubPostMain" onclick="myclubPostMain()">목록</button>
+               <% if(data.userid_num==userid_num) { %>
+                  <button class="btn-sm btn-primary myclubPostMain"
+                     onclick="editPost('<%= data.post_id %>')">수정</button>
+                  <% } %>
+            </div>
+
+            <!-- 댓글 들어갈곳 -->
+
+            <% var date=new Date(data.updatedAt); var year=date.getFullYear(); var month=('0' + (date.getMonth() +
+               1)).slice(-2); var day=('0' + date.getDate()).slice(-2); var hours=date.getHours(); var minutes=('0' +
+               date.getMinutes()).slice(-2); var ampm=hours>= 12 ? '오후'
+               : '오전';
+               hours = hours % 12;
+               hours = hours ? hours : 12; // 0 시는 12시로 표시
+               %>
+               <p class="content-time">
+                  <%= year %>-<%= month %>-<%= day %>
+                           <%= ampm %>
+                              <%= hours %>시 <%= minutes %>분
+               </p>
+
+               <div class="commentList-box" id="commentList">
+                  <div class="comment-container">
+                     <label for="commentInput" class="comment-section">댓글
+                        <input type="text" id="commentInput" class="textField comment-input" placeholder="댓글을 입력하세요">
+                        <div class="textNum">
+                           <div class="helpText">최대 60글자까지 입력가능합니다</div>
+                           <div class="helpText">
+                              <span class="motivationCount">0</span>/60
+                           </div>
+                     </label>
+                  </div>
+                  <button class="btn-sm btn-primary submit" onclick="submitComment()">등록 </button>
+                  <% if (clubPostComment.length===0) { %>
+                     <p class="no-comment">등록된 댓글이 없습니다.</p>
+                     <% } else { %>
+
+                        <% } %>
+               </div>
+
+
+               <% for(let i=0; i < clubPostComment.length; i++) { %>
+                  <div class="comment-container list comment comment-<%= clubPostComment[i].comment_id %>">
+                     <div class="commentList">
+                        <%= clubPostComment[i].comment_name %>
+                           <div class>
+                              <% if (clubPostComment[i].userid_num===userid_num) { %>
+                                 <button onclick="deletePostComment('<%= clubPostComment[i].comment_id %>')">
+                                    <i data-feather="trash-2" class="trash-2"></i>
+                                 </button>
+                                 <button
+                                    onclick="showEditField('<%= clubPostComment[i].comment_id %>', '<%= clubPostComment[i].content %>')"><i
+                                       data-feather="edit" class="edit"></i></button>
+                                 <% } %>
+                           </div>
+                     </div>
+                     <div class="comment-content">
+                        <p>
+                           <%= clubPostComment[i].content %>
+                        </p>
+                     </div>
+                     <!-- 좋아요 -->
+                     <div class="like">
+                        <% let likePush='false' %>
+                           <% const content=JSON.parse(JSON.stringify(clubPostCommentLike)); %>
+                              <% for (let j=0; j < content[i].length; j++) { %>
+                                 <% if (content[i][j].likeid_num==userid_num) { %>
+                                    <%likePush='true'; %>
+                                       <%}%>
+                                          <%}%>
+                                             <% if (likePush==='false' ){%>
+                                                <button
+                                                   onclick="toggleLike('<%= clubPostComment[i].comment_id %>', '<%= userid_num %>', '<%= clubPostCommentLike[i].length %>', this)">
+                                                   <i id="heart-icon-<%= clubPostComment[i].comment_id %>"
+                                                      class="fas fa-heart"></i> <span class="like-num">
+                                                      <%= clubPostCommentLike[i].length %>
+                                                   </span>
+                                                </button>
+                                                <%} else if(likePush==='true' ) {%>
+                                                   <button
+                                                      onclick="toggleLike('<%= clubPostComment[i].comment_id %>', '<%= userid_num %>', '<%= clubPostCommentLike[i].length %>', this)"><i
+                                                         id="heart-icon-<%= clubPostComment[i].comment_id %>"
+                                                         class="heart-active fas fa-heart "></i> <span class="like-num">
+                                                         <%= clubPostCommentLike[i].length %>
+                                                      </span>
+                                                   </button>
+                                                   <% }%>
+                     </div>
+                     <!-- 좋아요 끝-->
+
+                     <!-- 시간 업데이트 하는거.. -->
+                     <div class="list-time">
+                        <% if (clubPostComment[i].updatedAt) { %>
+                           <% var date=new Date(clubPostComment[i].updatedAt); var year=date.getFullYear(); var
+                              month=('0' + (date.getMonth() + 1)).slice(-2); var day=('0' + date.getDate()).slice(-2);
+                              var hours=date.getHours(); var minutes=('0' + date.getMinutes()).slice(-2); var
+                              ampm=hours>= 12 ?
+                              '오후' : '오전';
+                              hours = hours % 12;
+                              hours = hours ? hours : 12; // 0 시는 12시로 표시
+                              %>
+                              <p>
+                                 <%= year %>-<%= month %>-<%= day %>
+                                          <%= ampm %>
+                                             <%= hours %>시 <%= minutes %>분
+                              </p>
+                     </div>
+                     <% } %>
+                  </div>
+                  <!-- for문 끝 -->
+                  <% } %>
+
+                     <div id="editCommentSection" style="display: none;">
+                        <input type="text" id="editCommentInput" class="textField" placeholder="댓글 수정">
+                        <button class="btn-sm btn-primary" onclick="submitEdit()">수정 완료</button>
+                     </div>
+         </div>
+         </div>
+
+      </main>
+      <script>
+
+         const abc = JSON.parse(JSON.stringify('<%=clubPostCommentLike%>'));
+         console.log('<%=clubPostCommentLike%>');
+         const comment = document.getElementById('comment');
+         const club_id = "<%=data.club_id%>";
+         const post_id = "<%=data.post_id%>";
+
+
+
+         function toggleLike(comment_id, userid_num, currentLikeNum, clickToBtn) {
+            const heartIcon = document.getElementById('heart-icon-' + comment_id);
+            let likeSpan = clickToBtn.querySelector(".like-num");
+            const isLiked = heartIcon.classList.contains('heart-active');
+            let currentLikeNum1 = Number(likeSpan.innerText);
+
+            if (isLiked) {
+               // 좋아요 해제 요청
+               axios.delete(`/myclubPostDetail/${club_id}/${post_id}/${comment_id}/${userid_num}`)
+                  .then(response => {
+                     if (response.data.isDeleted) {
+                        heartIcon.classList.remove('heart-active');
+
+                        likeSpan.textContent = Number(currentLikeNum1) - 1;
+                     }
+                  })
+                  .catch(error => {
+                     console.error('Error:', error);
+                  });
+            } else {
+               // 좋아요 추가 요청
+               axios.post(`/myclubPostDetail/${club_id}/${post_id}/${comment_id}`)
+                  .then(response => {
+                     heartIcon.classList.add('heart-active');
+                     likeSpan.textContent = Number(currentLikeNum1) + 1;
+                  })
+                  .catch(error => {
+                     console.error('Error:', error);
+                  });
+            }
+         }
+
+
+         // const content = JSON.parse('<%- JSON.stringify(clubPostCommentLike) %>');
+         // console.log(content.length);
+
+
+         // 유효성 검사 (글자수 세기, 글자수 넘어가면 경고 문구 보여주고 더이상 타이핑 되지 않도록 하기)
+         $('#commentInput').keyup(function (e) {
+            let content1 = $(this).val();
+
+            // 글자수 세기
+            if (content1.length == 0 || content1 == '') {
+               $('.motivationCount').text('0');
+            } else {
+               $('.motivationCount').text(content1.length);
+            }
+
+
+
+            // 글자수 제한
+            if (content1.length > 60) {
+
+               $(this).val($(this).val().substring(0, 60));
+
+            };
+         });
+
+
+
+
+
+
+         // 댓글 등록
+         async function submitComment() {
+            const commentContent = document.getElementById('commentInput').value;
+
+            // 사용자에게 댓글 등록을 확인
+            const isConfirmed = confirm("댓글을 등록하시겠습니까?");
+            if (isConfirmed) {
+               await axios.post(`/myclubPostDetail/${club_id}/${post_id}/`, {
+                  comment_name: "test", // 실제 사용자 이름 또는 ID
+                  content: commentContent
+               })
+                  .then(res => {
+                     console.log("댓글 등록 완료", res.data);
+
+                     // 새로운 댓글을 목록에 추가
+
+                     const commentList = document.getElementById('commentList');
+                     const newCommentDiv = document.createElement('div');
+                     newCommentDiv.classList.add('comment');
+                     const newCommentLike = document.createElement('span');
+
+                     comment_id = res.data.comment_id;
+                     console.log('107 res', comment_id);
+
+                     // 댓글 작성자 이름을 나타내는 p 태그 생성
+                     const nameParagraph = document.createElement('p');
+                     nameParagraph.textContent = res.data.comment_name;
+
+                     // 댓글 내용을 나타내는 p 태그 생성
+                     const contentParagraph = document.createElement('p');
+                     contentParagraph.textContent = res.data.content;
+                     contentParagraph.classList.add('comment-content'); // 클래스 추가
+
+                     // div에 p 태그들 추가
+                     // const newLike = document.createElement('span')
+                     // newLike.textContent = res.data.comment_name
+
+                     newCommentDiv.appendChild(nameParagraph);
+                     newCommentDiv.appendChild(contentParagraph);
+                     // newCommentLike.innerHTML = `<i id="${comment_id}" class= "like-btn" onclick = "likeBtn()" > 좋아요</i > `;
+                     console.log(newCommentLike);
+                     newCommentDiv.appendChild(newCommentLike);
+
+                     // 코멘트 목록에 새로운 코멘트 div 추가
+                     commentList.appendChild(newCommentDiv);
+                     console.log(contentParagraph); // 클래스를 추가한 후 요소를 콘솔에 출력
+
+                     newCommentDiv.appendChild(nameParagraph);
+                     newCommentDiv.appendChild(contentParagraph);
+                     // newCommentLike.innerHTML = `<i id="${comment_id}" class= "like-btn" onclick = "likeBtn()" > 좋아요</i > `;
+                     console.log(newCommentLike);
+                     newCommentDiv.appendChild(newCommentLike);
+
+                     location.reload();
+                  })
+                  .catch(error => {
+                     console.error("댓글 등록 에러:", error);
+                  });
+
+            }
+
+         }
+
+
+         function editCommentContent(comment_id, newContent) {
+            // 해당 댓글의 내용을 나타내는 요소를 찾음
+            const commentContentElement = document.querySelector(`.comment-${comment_id}`);
+            console.log(commentContentElement);
+            if (commentContentElement) {
+               // 새로운 내용으로 업데이트
+               commentContentElement.textContent = newContent;
+            } else {
+               console.error('댓글 내용을 찾을 수 없음');
+            }
+         }
+
+
+
+
+         function showEditField(comment_id, currentContent) {
+            currentEditingCommentId = comment_id; // 전역 변수 업데이트
+            // 현재 수정 중인 댓글 ID를 저장
+
+
+            // 수정 입력 필드에 현재 댓글 내용 설정
+            const editInput = document.getElementById('editCommentInput');
+            editInput.value = currentContent;
+            console.log(editInput.value);
+
+            // 수정 영역 보이기
+            document.getElementById('editCommentSection').style.display = 'block';
+         }
+         function submitEdit() {
+            if (currentEditingCommentId === null) {
+               console.error('수정할 댓글이 지정되지 않음');
+               return;
+            }
+
+            const editedContent = document.getElementById('editCommentInput').value;
+
+            axios.patch(`/myclubPostDetail/${club_id}/${post_id}/${currentEditingCommentId}`, {
+               content: editedContent
+            })
+               .then(res => {
+
+                  if (res.data) {
+                     // 댓글 내용만 업데이트
+                     const commentContentElement = document.querySelector(`.comment-${currentEditingCommentId}`);
+                     console.log(commentContentElement);
+                     console.log('<%=clubPostComment%>');
+                     if (commentContentElement) {
+                        commentContentElement.textContent = editedContent;
+                     }
+                     // 수정 영역 숨기기
+                     document.getElementById('editCommentSection').style.display = 'none';
+
+                     // 페이지 새로고침
+                     location.reload();
+                  } else {
+                     console.error('댓글 수정 실패');
+                  }
+               })
+               .catch(error => {
+                  console.error('댓글 수정 에러:', error);
+               });
+         }
+
+
+         // 댓글 삭제
+
+         function deletePostComment(comment_id) {
+            const isConfirmed = confirm("댓글을 삭제하시겠습니까?");
+            if (isConfirmed) {
+               const commentElement = document.querySelector(`.comment-${comment_id}`);
+               axios.delete(`/myclubPostDetail/${club_id}/${post_id}/${comment_id}`)
+                  .then(res => {
+                     console.log(commentElement);
+                     console.log(res);
+                     if (res.isDeleted) {
+                        // 삭제 성공 시, 페이지에서 해당 댓글 요소 제거
+                        commentElement.remove();
+                     } else {
+                        // 삭제 실패 처리
+                     }
+                     location.reload();
+                  })
+                  .catch(err => {
+                     console.error("댓글 삭제 에러:", err);
+                  });
+            }
+
+         }
+
+         function editPost() {
+            window.location.href = `/myclubEditPost/${club_id}/${post_id}`;
+         }
+
+
+         // 목록보기
+         function myclubPostMain() {
+            window.location.href = `/myClubPostMain/${club_id}`;
+         }
+
+
+
+      </script>
+
+      <script>feather.replace()</script>
+</body>

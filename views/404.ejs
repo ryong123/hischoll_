@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Not Found</title>
+  <link rel="stylesheet" href="/style.css" />
+
+  <style>
+    .error-page-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+
+    .error-image img {
+      max-width: 80%;
+      height: auto;
+    }
+
+    .error-content h1 {
+      font-size: 3em;
+      margin-bottom: 0.67em;
+    }
+
+    .error-content p {
+      font-size: 1.5em;
+      margin-bottom: 1.2em;
+    }
+
+    .home-link {
+      display: inline-block;
+      margin-top: 1em;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .home-link:hover {
+      background-color: #0056b3;
+    }
+  </style>
+
+</head>
+
+<body>
+  <main class="container">
+    <div class="error-page-container">
+      <div class="error-image">
+        <!-- <img src="https://cdn.pixabay.com/photo/2021/02/26/16/29/error-404-6052476_1280.png" alt="페이지를 찾을 수 없습니다"> -->
+        <!-- <img
+          src="https://img.freepik.com/free-vector/web-hosting-isometric-composition-with-icons-of-desktop-computer-parts-with-404-error-and-users-characters-vector-illustration_1284-80937.jpg?w=1480&t=st=1703748421~exp=1703749021~hmac=9f92f3f2718547999472481d123d65d049188692d2d875ed64663e1e0774786b"
+          alt="페이지를 찾을 수 없습니다"> -->
+
+        <img
+          src="https://img.freepik.com/free-vector/oops-404-error-with-a-broken-robot-concept-illustration_114360-1932.jpg?w=1480&t=st=1703748785~exp=1703749385~hmac=14e9fc9c443f3704d75d7442b7dfd7f2c3ee7f0a552f62dea2cf7b494314203e"
+          alt="페이지를 찾을 수 없습니다">
+      </div>
+      <div class="error-content">
+        <!-- <h1>404 Error</h1> -->
+        <p>페이지를 찾을 수 없습니다.</p>
+        <a href="#" onclick="goBack()" class="btn btn-primary home-link">이전 페이지로 돌아가기</a>
+        <a href="/" class="btn btn-primary home-link">홈으로 돌아가기</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+
+</html>

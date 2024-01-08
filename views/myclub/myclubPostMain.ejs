@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>동아리 게시판</title>
+   <link rel="stylesheet" href="/style.css" />
+   <link rel="stylesheet" href="/myClubPostMain.css" />
+   <!-- axios CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+   <style>
+      .list-content {
+         white-space: nowrap;
+         /* 줄바꿈 없이 텍스트를 한 줄에 표시 */
+         overflow: hidden;
+         /* 넘치는 내용을 숨김 */
+         text-overflow: ellipsis;
+         /* 넘치는 내용을 '...'으로 표시 */
+         width: 200px;
+         /* 원하는 컨테이너의 너비를 설정 */
+      }
+
+      .list-title {
+         white-space: nowrap;
+         /* 줄바꿈 없이 텍스트를 한 줄에 표시 */
+         overflow: hidden;
+         /* 넘치는 내용을 숨김 */
+         text-overflow: ellipsis;
+         /* 넘치는 내용을 '...'으로 표시 */
+         width: 200px;
+         /* 원하는 컨테이너의 너비를 설정 */
+      }
+
+      .list-mainbox {}
+
+      .list-box {
+         display: flex;
+         justify-content: space-between;
+         /* 양쪽 끝에 날짜와 시간을 배치 */
+         align-items: center;
+         /* 세로 중앙 정렬 */
+         width: 100%;
+      }
+
+      .list-time {
+         text-align: right;
+         /* 시간을 오른쪽에 정렬 */
+      }
+
+      .list-name {
+         margin-bottom: 30px;
+      }
+   </style>
+</head>
+
+<body>
+
+   <%- include('../component/header') %>
+      <div class="container">
+         <button onclick="createPost()" id="plus-button" class="plus-button">+</button>
+         <!-- 게시물 목록 -->
+         <div class="list-container">
+            <% if(data.length !==0) { %>
+               <% for(let i=0; i < data.length; i++) { %>
+                  <div class="list" onclick="showDetail('<%= data[i].post_id %>')">
+                     <div class="list-name">
+                        <%= data[i].name %>
+                     </div>
+                     <div class="list-title">
+                        <%= data[i].title %>
+                     </div>
+                     <div class="list-content">
+                        <%= data[i].content %>
+                     </div>
+
+                     <!-- 지금 현재 시간은 출력되지만 YYYY-MM-DD 변경해줘야함 -->
+                     <% var date=new Date(data[i].updatedAt); var year=date.getFullYear(); var month=('0' +
+                        (date.getMonth() + 1)).slice(-2); var day=('0' + date.getDate()).slice(-2); var
+                        hours=date.getHours(); var ampm=hours>= 12 ? '오후' : '오전';
+                        hours = hours % 12;
+                        hours = hours ? hours : 12; // 0 시는 12로 표시
+                        var minutes = ('0' + date.getMinutes()).slice(-2);
+                        %>
+
+                        <div class="list-content list-box">
+                           <div class="list-date">
+                              <%= year %>년<%= month %>월 <%= day %>일
+                           </div>
+                           <div class="list-time">
+                              <%= ampm %>
+                                 <%= hours %>시 <%= minutes %>분
+                           </div>
+                        </div>
+
+
+
+                  </div>
+                  <% } %>
+                     <% } else { %>
+                        <div class="emptyFull"><span>작성된 글이 없습니다<br>
+                              아래 + 버튼을 눌러 글을 써보세요</span></div>
+                        <% } %>
+         </div>
+      </div>
+      <script>
+         const club_id = "<%= club_id %>";
+
+
+         function showDetail(post_id) {
+            window.location.href = `/myclubPostDetail/${club_id}/${post_id}`;
+         }
+
+         function createPost() {
+            console.log("게시글 생성 요청 보냄", `/myclubNewPost/${club_id}`);
+            window.location.href = `/myclubNewPost/${club_id}`;
+         }
+
+      </script>
+</body>
+
+</html>

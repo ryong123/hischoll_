@@ -1,0 +1,592 @@
+/* .search-container {
+  width: 50%;
+  padding: 20px;
+  border-radius: 50px;
+}
+
+.label {
+  color: #aaa;
+  font-size: 15px;
+  margin-bottom: 11p;
+}
+
+.search-bar {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+}
+
+.search-icon {
+  padding-right: 15px;
+  color: #aaa;
+  font-size: 1.5em;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-option {
+  background-color: white;
+  border: none;
+  outline: none;
+  padding: 10px 30px;
+  margin-right: 25px;
+  color: #aaa;
+  font-size: 15px;
+  margin-bottom: 11px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar-option {
+  max-width: 50%;
+
+  text-align: center;
+}
+
+.search-option-container {
+  width: 100%;
+  padding: 20px;
+}
+
+.hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.hashtag {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.list {
+  display: flex;
+  width: 312px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+}
+.list-title {
+  font-size: var(--spacing-2);
+  color: var(--color-gray-600);
+}
+.list-content {
+  font-size: var(--spacing-3);
+  color: var(--color-gray-400);
+} */
+
+/* //////////////// */
+/* .list-additional {
+  display: flex;
+  width: 360px;
+  padding: 16px 24px;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #eaeaea;
+}
+.list-additional-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 1 0 0;
+}
+.list-additional-title {
+  align-self: stretch;
+  font-size: var(--spacing-2);
+  color: var(--color-gray-600);
+}
+.list-additional-content {
+  align-self: stretch;
+  font-size: 14px;
+  color: var(--color-gray-400);
+}
+.additional-info {
+  font-size: var(--spacing-3);
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: #6b7280;
+} 
+
+*/
+
+/* .list {
+  display: flex;
+  padding: 15px 0px;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+}
+
+.dateInput-title,
+.dateInput-content {
+  width: 70%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.list-title {
+  padding: 0px 15px;
+  font-size: var(--spacing-2);
+  color: var(--color-gray-600);
+}
+
+.list-content {
+  padding: 0px 15px;
+  font-size: var(--spacing-3);
+  color: var(--color-gray-400);
+} */
+
+/* 전체 화면 모달 스타일 */
+/* .fullscreen-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.fullscreen-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 50%;
+} */
+
+/* CSS RESET */
+
+@charset "utf-8";
+/***
+    The new CSS reset - version 1.8.5 (last updated 14.6.2023)
+    GitHub page: https://github.com/elad2412/the-new-css-reset
+***/
+
+/*
+    Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
+    - The "symbol *" part is to solve Firefox SVG sprite bug
+    - The "html" attribute is exclud, because otherwise a bug in Chrome breaks the CSS hyphens property (https://github.com/elad2412/the-new-css-reset/issues/36)
+ */
+*:where(
+    :not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)
+  ) {
+  all: unset;
+  display: revert;
+}
+
+/* Preferred box-sizing value */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Reapply the pointer cursor for anchor tags */
+a,
+button {
+  cursor: revert;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+/* For images to not be able to exceed their container */
+img {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+
+/* removes spacing between cells in tables */
+table {
+  border-collapse: collapse;
+}
+
+/* Safari - solving issue when using user-select:none on the <body> text input doesn't working */
+input,
+textarea {
+  -webkit-user-select: auto;
+}
+
+/* revert the 'white-space' property for textarea elements on Safari */
+textarea {
+  white-space: revert;
+}
+
+/* minimum style to allow to style meter element */
+meter {
+  -webkit-appearance: revert;
+  appearance: revert;
+}
+
+/* preformatted text - use only for this feature */
+:where(pre) {
+  all: revert;
+}
+
+/* reset default text opacity of input placeholder */
+::placeholder {
+  color: unset;
+}
+
+/* remove default dot (•) sign */
+::marker {
+  content: initial;
+}
+
+/* fix the feature of 'hidden' attribute.
+   display:revert; revert to element instead of attribute */
+:where([hidden]) {
+  display: none;
+}
+
+/* revert for bug in Chromium browsers
+   - fix for the content editable attribute will work properly.
+   - webkit-user-select: auto; added for Safari in case of using user-select:none on wrapper element */
+:where([contenteditable]:not([contenteditable='false'])) {
+  -moz-user-modify: read-write;
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-line-break: after-white-space;
+  -webkit-user-select: auto;
+}
+
+/* apply back the draggable feature - exist only in Chromium and Safari */
+:where([draggable='true']) {
+  -webkit-user-drag: element;
+}
+
+/* Revert Modal native behavior */
+:where(dialog:modal) {
+  all: revert;
+}
+
+/* input:number disable spinner */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* 스타일 정의 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+:root {
+  --spacing-1: 12px;
+  --spacing-2: 16px;
+  --spacing-3: 14px;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+
+  font-family: 'Pretendard Variable', Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 600px;
+}
+
+.container {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  height: fit-content;
+  margin-bottom: 100px;
+}
+
+/* 버튼 */
+.cta {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  gap: 8px;
+  width: 100%;
+  padding: 20px;
+  bottom: 0px;
+  transform: translate(-20px, 0);
+  max-width: 600px;
+  background: linear-gradient(rgba(255, 255, 255, 0) 5%, #fff 30%);
+  z-index: 99;
+}
+
+.btn {
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  text-align: center;
+}
+
+.btn-primary {
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: var(--color-primary-500);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+
+.btn-secondary {
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: white;
+  border: solid 1px var(--color-primary-500);
+  color: var(--color-primary-500);
+  border-radius: 4px;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+
+/* 텍스트필드 - input */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+label {
+  padding: 4px 0;
+  color: var(--color-gray-400);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.input .helpText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-gray-400);
+  font-size: 14px;
+}
+
+.textField {
+  padding: var(--spacing-1) var(--spacing-2);
+  background-color: white;
+  border: solid 1px var(--color-gray-200);
+  border-radius: 4px;
+  width: 100%;
+  color: var(--color-gray-500);
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+  /* background: url(icons/search.svg) no-repeat scroll right 12px center; */
+}
+
+.textField:focus {
+  border: solid 1.5px var(--color-primary-500);
+  transition: all 0.5s;
+  box-shadow: 0px 2px 8px 0px rgba(47, 128, 237, 0.2);
+}
+
+/* 헤더 CSS */
+.header {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  z-index: 500;
+}
+
+.navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  z-index: 500;
+}
+.menu-bar,
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-icon,
+.settings-icon,
+.close-menu {
+  cursor: pointer;
+}
+
+.close-menu {
+  position: relative;
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+.sidebar {
+  position: relative;
+
+  line-height: 50px;
+  height: 0;
+  width: 0%;
+  /* 사이드바 크기를 0으로 시작 */
+  background-color: white;
+  /* 사이드바 배경 색상-gray-50 */
+  overflow: hidden;
+  /* 내용이 넘칠 경우 숨김 처리 */
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+a {
+  text-decoration: none;
+  font-size: 15px;
+  color: black;
+}
+.sidebar a {
+  font-size: 15px;
+  color: black;
+  display: block;
+}
+
+.sidebar a:hover {
+  color: #9ca3af;
+
+  /*gray-400*/
+}
+
+.sidebar.active {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+button {
+  width: 100px;
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    height: 70px;
+  }
+  .menu-bar {
+    display: none;
+  }
+  .nav-btn {
+    display: none;
+  }
+}
+@media screen and (min-width: 601px) {
+  .menu-icon,
+  .settings-icon,
+  .close-menu {
+    display: none;
+  }
+  .sidebar {
+    display: none;
+  }
+}
+
+/* 리스트 목록 스타일 ( 제목, 내용 / 부가내용 X (날짜, 시간등) */
+.list {
+  display: flex;
+  width: 90%;
+  margin: 10px auto;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  border-radius: 4px;
+  border: 1px solid #eaeaea;
+  /* default_shadow */
+  box-shadow: 0px 1px 8px 0px rgba(19, 19, 19, 0.1);
+}
+.list-title {
+  font-size: var(--spacing-2);
+  color: var(--color-gray-600);
+}
+.list-content {
+  font-size: var(--spacing-3);
+  color: var(--color-gray-400);
+}

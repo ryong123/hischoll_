@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>검색 및 해시태그</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js"
+    integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/club.css">
+  <style>
+    .list:hover{
+      cursor: pointer;
+    }
+
+    #city, #selectedLocation{
+      width: 49%;
+      background-color: var(--color-gray-100);
+      border: none;
+      box-shadow: none;
+  
+    }
+
+  </style>
+</head>
+
+<body>
+
+    <%- include('../component/header')%>
+    <main class="container">
+        <div class="search-bar">
+          <input type="text" class="search-input" id="searchText" placeholder="이름, 키워드 검색">
+
+            <button type="button" onclick="searchName()" class="search-icon" id="search">
+              <i data-feather="search" ></i>
+            </button>
+      
+        </div>
+        <div>
+          
+        <select   class='textField' id="city" required>
+          <option value="서울">서울시</option>
+        </select>
+        <select  class='textField' id="selectedLocation" required >
+          <option value="all">전체</option>
+          <option value="마포">마포구</option>
+          <option value="종로">종로구</option>
+          <option value="중">중구</option>
+          <option value="용산">용산구</option>
+          <option value="성동">성동구</option>
+          <option value="노원">노원구</option>
+          <option value="동대문">동대문구</option>
+          <option value="중랑">중랑구</option>
+          <option value="성북">성북구</option>
+          <option value="강북">강북구</option>
+          <option value="도봉">도봉구</option>
+          <option value="은평">은평구</option>
+          <option value="서대문">서대문구</option>
+          <option value="양천">양천구</option>
+          <option value="강서">강서구</option>
+          <option value="금천">금천구</option>
+          <option value="영등포">영등포구</option>
+          <option value="동작">동작구</option>
+          <option value="관악">관악구</option>
+          <option value="서초">서초구</option>
+          <option value="강남">강남구</option>
+          <option value="송파">송파구</option>
+          <option value="강동">강동구</option>
+          <option value="서초">서초구</option>
+          <option value="노원">노원구</option>
+
+
+        </select>
+      </div>
+        
+
+   
+      
+    
+    <div id="searchResult">
+      <% if (data.length==0) { %>
+        <div class="emptyFull"><span>아직 생성된 동아리가 없습니다.<br>
+        하단의 + 버튼을 눌러 동아리를 생성해보세요!</span></div>
+      <% }else{ %>
+    
+      <% for(let i=0; i<data.length;i++){ %>
+        <div class="list" onclick="showDetail(event)" >
+    
+          <div class="list-title" id="<%=data[i].location%>" >
+
+            <%= data[i].club_name%>
+            <span style="display: none;"  class="club_id"><%=data[i].club_id%>
+            </span>
+          </div>
+          <div class="list-content">
+            <%=data[i].description%>
+            <span style="display: none;"  class="club_id"><%=data[i].club_id%>
+            </span>
+          </div>
+          <div class="keyword">
+            <%=data[i].keyword %>
+            <span style="display: none;"  class="club_id"><%=data[i].club_id%>
+            </span>
+          </div>
+
+      </div>
+        <% } %>
+        <% } %>
+      </div>
+    
+        
+    <div class="cta">
+      <button class="btn-create" type="button" onclick="createClub()"><i data-feather="plus" ></i></button>
+    </div>
+      
+    </div>
+  </main>
+    
+
+
+   
+  
+  <script>
+
+  const selectBox = document.getElementById('selectedLocation');
+  const mainDiv = document.getElementById('searchResult');
+  const seachText = document.getElementById('searchText');
+  const listArray = document.getElementsByClassName('list');
+
+  
+  for(i=0; i<listArray.length; i++){
+    let keywordDiv=listArray[i].querySelector('.keyword');
+    let keyword=keywordDiv.innerText;
+    keywordDiv.innerText="";
+    let keywords = keyword.replace(/\s/g, "");
+    let keywordsArray = keywords.split(',');
+    for (j=0;j<keywordsArray.length; j++){
+      keywordDiv.innerHTML+=`<span class="hashtag">#${keywordsArray[j]}</span>`
+    }
+  }
+ 
+    
+
+    function handleEnterKey(event){
+      if(event.keyCode === 13){
+        event.preventDefault();
+        document.getElementById('search').click();
+      }
+    }
+
+    document.addEventListener('keydown',handleEnterKey);
+  
+    function showDetail(event) {
+      let clickedDiv = event.target;
+
+      let selectedClub = clickedDiv.querySelector('.club_id');
+      let club_id = selectedClub.innerText;
+      window.location.href=`/clubDetail/${club_id}`
+      
+    }
+  
+  function createClub(){
+    window.location.href='/createClub';
+  }
+
+  
+  
+
+  function searchName(){
+    const text = seachText.value;
+ 
+
+    for(i=0; i<listArray.length; i++){
+
+      let titleDiv =listArray[i].querySelector('.list-title');
+      let keywordDiv = listArray[i].querySelector('.keyword');
+        if((titleDiv.innerText.includes(text))||(keywordDiv.innerText.includes(text))){
+          listArray[i].style.display='flex'
+        }else{
+          listArray[i].style.display='none'
+        }
+        
+      }
+    }
+
+  
+  selectBox.addEventListener('change', function(){
+    const value = selectBox.value;
+    if(value!='all'){
+      
+      
+      for(i=0; i<listArray.length; i++){
+        if(listArray[i].querySelector('.list-title').id == `서울시 ${value}구`){
+          listArray[i].style.display='flex'
+        }else{
+          listArray[i].style.display='none'
+        }
+      }
+  }else{
+    for(i=0; i<listArray.length; i++){
+          listArray[i].style.display='flex'
+      }
+  }
+
+
+
+
+    
+
+  })
+  
+  </script>
+  <script>feather.replace()</script>
+</body>
+
+</html>

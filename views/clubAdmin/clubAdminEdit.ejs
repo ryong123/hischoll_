@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>동아리 정보 관리</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+ 
+ #transfer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ }
+
+ .member{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ }
+  </style>
+</head>
+
+
+<body>
+  
+    <%- include('../component/header')%>
+    <main class="container">
+      <div class="input">
+    
+          <label for="editClubName">동아리 이름</label>
+          <input id="editClubName" class=" textField" value="<%=clubAdminEdit.club_name%>">
+          </div>
+        <div class="input">
+          <label for="editClubDescription">동아리 설명</label>
+          <input id="editClubDescription" class=" textField" value="<%=clubAdminEdit.description%>">
+        </div>
+        <div class="input">
+          <label for="editClubLeaderName">동아리 관리자</label>
+          <div id="transfer"><span id="editClubLeaderName" ><%=leaderName.name%></span>
+    
+          <button  class="btn btn-sm btn-ghost" onclick="trasferLeader()">위임하기</button>
+        </div>
+        </div>
+        <div class="member">
+          <div class="input">
+            <label>회원수</label>
+            
+            <div>
+              <%=clubmembers.length%> 명
+            </div>
+            </div>
+            <div class="input">
+              <label for="editClubLimit">제한 회원수</label>
+              <div>
+                <%=clubAdminEdit.limit%> 명
+              </div>
+              </div>
+ 
+        </div>
+    
+        <div class="input">
+          <label for="editClubKeyword">키워드</label>
+          <input class=" textField" id="editClubKeyword" value="<%=clubAdminEdit.keyword%>">
+        </div>
+        <button onclick="deleteClubInfo()"  id="deleteClub" class=" btn-sm btn-warning"> 동아리 삭제</button>
+
+
+        <div class="cta"><button onclick="patchClubInfo()" class="btn btn-primary">수정</button>
+        </div>
+      </main>
+
+    
+
+
+
+  <script>
+    console.log('<%=clubAdminEdit%>');
+
+    // club
+
+    
+   function trasferLeader(){
+      window.location.href= "/clubAdminTransfer/<%=clubAdminEdit.club_id%>"
+   }
+   async function patchClubInfo(){
+    const newName = document.getElementById('editClubName').value;
+    const newDescription = document.getElementById('editClubDescription').value;
+    const newLimit = document.getElementById('editClubLimit').value;
+    const newKeyword = document.getElementById('editClubKeyword').value;
+    console.log(newName,newDescription,newLimit,newKeyword)
+ 
+
+    try {
+
+          const res = await axios({
+            method: "PATCH",
+            url: `/clubAdminEdit/<%=clubAdminEdit.club_id%>`,
+            data: {
+              club_name: newName,
+              leader_id: '<%=clubAdminEdit.leader_id%>',
+              limit: newLimit,
+              location: '<%=clubAdminEdit.location%>',
+              field: '<%=clubAdminEdit.field%>',
+              keyword: newKeyword,
+              description: newDescription
+            },
+          });
+          console.log(res);
+          alert('수정되었습니다');
+
+        } catch (error) {
+          console.log("createAdminEdit 에서 axios error > ", error);
+        }
+
+      }
+      async function deleteClubInfo() {
+        if(confirm("정말로 삭제하시겠습니까?")){
+          try {
+          const res = await axios({
+            method: "DELETE",
+            url: `/clubAdminEdit/<%=clubAdminEdit.club_id%>`,
+            data: {
+              club_id: '<%=clubAdminEdit.club_id%>'
+            },
+          });
+          console.log(res);
+          alert('삭제되었습니다!');
+          window.location.href = '/home';
+
+        } catch (error) {
+          console.log("createAdminEdit 에서 axios error > ", error);
+        }
+
+        }
+        else{
+          return;
+        }
+        
+
+      }
+    </script>
+</body>
+
+</html>

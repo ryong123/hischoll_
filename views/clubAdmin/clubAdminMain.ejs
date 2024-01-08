@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>하이스쿨 - 동아리 관리</title>
+   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminMain.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+   <%- include('../component/header')%>
+   <div class="container">
+      <a href="/clubAdminApplyList/<%=data%>">가입 요청 보기</a>
+      <a href="/clubAdminEdit/<%=data%>">동아리 정보 관리</a>
+      <a href="/clubAdminMemberList/<%=data%>">회원 목록</a>
+   </div>
+</body>
+<script>
+   console.log('<%=data%>');
+</script>
+</html>

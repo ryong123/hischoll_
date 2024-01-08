@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>하이스쿨 - 고객센터 메인</title>
+     <!-- axios CDN -->
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+     <!-- font-awesome -->
+     <script src="https://kit.fontawesome.com/6206d712ce.js" crossorigin="anonymous"></script>
+     <!-- 아이콘 CDN feather -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.1/feather.min.js"
+        integrity="sha512-4lykFR6C2W55I60sYddEGjieC2fU79R7GUtaqr3DzmNbo0vSaO1MfUjMoTFYYuedjfEix6uV9jVTtRCSBU/Xiw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <link rel="stylesheet" href="/style.css" />
+   <style>
+      .inputField{
+         border: 1px solid black;
+         width: 80%;
+         height: 80%;
+      }
+     
+      .admin-comment{
+         width: 100%;
+
+      }
+      .btn-delete{
+         padding: 0.3rem ;
+         width: fit-content;
+         height: fit-content;
+         background-color: var(--color-gray-200);
+         border-radius: 5px;
+      }
+      .btn-delete:hover{
+         cursor: pointer;
+         background-color:var(--color-gray-300) ;
+      }
+      .btn-delete:active{
+         background-color:var(--color-gray-300) ;
+      }
+
+      .btn-comment{
+         padding: 0.3rem ;
+         width: fit-content;
+         height: fit-content;
+         background-color: var(--color-primary-500);
+         color: white;
+         border-radius: 5px;
+      }
+      .btn-comment:hover{
+         background-color: var(--color-primary-600);
+      }
+      .btn-comment:active{
+         background-color: var(--color-primary-600);
+      }
+      .support{
+         border: 1px solid var(--color-gray-600);
+      }
+      .flex{
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+      }
+      .admin-zone{
+         width: 100%;
+      }
+      .textNum{
+         display: flex;
+         justify-content: space-between;
+      }
+      #commentInput{
+         width: 70%;
+         height: 30px;
+      }
+      .secretHashtag{
+         width: fit-content;
+         height: fit-content;
+         padding: 0.1rem 0.5rem;
+         font-size: 0.8rem;
+         border-radius: 10px;
+         background-color: var(--color-primary-50);
+         color: var(--color-primary-500);
+      }
+
+      
+   </style>
+</head>
+<body>
+   <%- include('../component/header')%>
+   <main class="container">
+      <% if (getSupport.length==0) { %>
+         <div class="emptyFull"><span>작성된 글이 없습니다<br>
+            아래 + 버튼을 눌러 문의사항을 남겨주세요</span></div>
+      <% }else{ %>
+
+         <!-- 게시물 목록 -->
+         <% for(let i=0; i < getSupport.length; i++) { %>
+            <% if (getSupport[i].secret==='1') { %>
+               <div class="list" >
+                  <span class="secretHashtag">비밀글</span>
+                  <div class="flex">
+                     
+
+                     <div class="listArea"> 
+                        <div class="list-title" onclick="showDetail('<%= getSupport[i].qa_id %>','<%= getSupport[i].secret %>','<%= getSupport[i].userid_num %>',this,'<%=getSupport[i].qa_content%>')">
+                     <% if (userid_num==getSupport[i].userid_num || userid_num=='1') { %>
+                        <%if(getSupport[i].qa_content.length > 20){%>
+                           <%= getSupport[i].qa_content.slice(0,20) %> . . .
+                           <%}else{%>
+                              <%= getSupport[i].qa_content %>
+                              <%}%>
+                      
+                     <% } else {%>
+                   
+                        <div>비밀글입니다.</div>
+                        
+                     <%}%>
+                        </div>
+                        <div class="list-content"><%= userNickname[i] %></div>
+                     </div>
+               
+                     
+                        <div class="buttonArea">
+                           <% if (getSupport[i].userid_num==userid_num) { %>
+                           <button onclick="deleteSupport('<%=getSupport[i].qa_id%>')"><i data-feather="trash-2" class="trash-2"></i>
+                           </button>
+                           <% } %>
+                        </div>
+               
+                  </div>
+                  
+                  
+               
+                     <div id="<%=getSupport[i].qa_id%>" style="display: none;" class="admin-zone">
+                      
+                     <% if (userid_num=='1') { %>
+                        <div class="commentList-box" id="commentList">
+                           <div id="<%=getSupport[i].qa_id%>">
+                              <label for="commentInput" class="comment-section">
+                              <input type="text" id="commentInput" class="textField support" placeholder="답변을 입력하세요">
+                              <button class="btn-sm btn-primary submit" onclick="patch('<%=getSupport[i].qa_id%>')">등록 </button>
+                             
+                           </label>
+                        </div>
+                        
+                     </div>
+                      
+                     <% } %>
+                        
+                     <br>
+                     <% if (getSupport[i].qa_comment) { %>
+                        <div class="list-content"> <%= getSupport[i].qa_comment %></div>
+                     <% }else{ %>
+                        <div class="list-content">아직 답변이 등록되지 않았습니다.</div>
+                        <%}%>
+                     
+                  </div>
+               </div>
+            </div>
+
+
+
+            <% }else{ %>
+            <div class="list" >
+               <div class="flex">
+
+                  <div class="listArea"> 
+                     <div class="list-title" onclick="showDetail('<%= getSupport[i].qa_id %>','<%= getSupport[i].secret %>','<%= getSupport[i].userid_num %>',this,'<%=getSupport[i].qa_content%>')">
+                  <%if(getSupport[i].qa_content.length > 20){%>
+                  <%= getSupport[i].qa_content.slice(0,20) %> . . .
+                  <%}else{%>
+                     <%= getSupport[i].qa_content %>
+                     <%}%>
+                     </div>
+                     <div class="list-content"><%= userNickname[i] %></div>
+                  </div>
+            
+                  
+                     <div class="buttonArea">
+                        <% if (getSupport[i].userid_num==userid_num) { %>
+                        <button onclick="deleteSupport('<%=getSupport[i].qa_id%>')"><i data-feather="trash-2" class="trash-2"></i>
+                        </button>
+                        <% } %>
+                     </div>
+            
+               </div>
+               
+               
+               
+            
+                  <div id="<%=getSupport[i].qa_id%>" style="display: none;" class="admin-zone">
+                   
+                  
+                     <% if (userid_num=='1') { %>
+                        <div class="commentList-box" id="commentList">
+                           <div id="<%=getSupport[i].qa_id%>">
+                              <label for="commentInput" class="comment-section">
+                              <input type="text" id="commentInput" class="textField support" placeholder="답변을 입력하세요">
+                              <button class="btn-sm btn-primary submit" onclick="patch('<%=getSupport[i].qa_id%>')">등록 </button>
+                             
+                           </label>
+                        </div>
+                        
+                     </div>
+                      
+                     <% } %>
+                  <br>
+                  <% if (getSupport[i].qa_comment) { %>
+                     <div class="list-content"> <%= getSupport[i].qa_comment %></div>
+                  <% }else{ %>
+                     <div class="list-content">아직 답변이 등록되지 않았습니다.</div>
+                     <% } %>
+
+                     
+                     
+       
+             
+                  
+               </div>
+            </div>
+         </div>
+            <% } %>
+
+            <% } %>
+            <% } %>
+
+            <div class="cta">
+               <button class="btn-create" type="button" onclick="createSupport()"><i data-feather="plus" ></i></button>
+             </div>
+   </main>
+   <script>
+
+   
+ 
+
+      function showDetail(qa_id,secret,userid_num,clickedDiv,content){
+         console.log(content.slice(0,20))
+         if(document.getElementById(`${qa_id}`).style.display=='none'){
+            if(secret==='1'){
+               if('<%=userid_num%>'=== userid_num ||'<%=userid_num%>'=='1'){
+
+                  document.getElementById(`${qa_id}`).style.display='block';
+                  clickedDiv.innerText=content
+                  
+        
+
+            }else{
+               alert('비밀글은 작성자만 볼 수 있습니다!');
+               return;
+            }
+         }
+            else{
+               document.getElementById(`${qa_id}`).style.display='block'
+               clickedDiv.innerText=content
+            }
+         }else {
+            if(secret=='1'){
+               document.getElementById(`${qa_id}`).style.display='none'
+               if(content.length >20){
+                  clickedDiv.innerText=content.slice(0,20)+' . . .';
+               }else{
+                  clickedDiv.innerText=content;
+               }
+
+            }else{
+               if(content.length >20){
+                  clickedDiv.innerText=content.slice(0,20)+' . . .';
+               }else{
+                  clickedDiv.innerText=content;
+               }
+               
+               document.getElementById(`${qa_id}`).style.display='none';
+               console.log(1);
+               
+            }
+         } 
+            
+            
+         }
+         
+      
+      function createSupport(){
+         window.location.href = '/supportNewPost';
+      }
+
+       async function patch(qa_id){
+         const Div= document.getElementById(`${qa_id}`);
+         const content= Div.querySelector('.support').value;
+         const commentDiv = Div.querySelector('.list-content');
+         try{
+            const res= await axios({
+            method: "PATCH",
+            url: `/supportMain/${qa_id}`,
+            data:{
+               qa_comment:content,
+            }
+
+         });
+         
+            alert('등록되었습니다');
+            commentDiv.innerText=content;
+            Div.querySelector('.support').value=''
+
+
+            
+            }catch(error){
+               console.log("support에서 답글 등록 오류 > ", error);
+            };
+      }
+
+
+      
+      async function deleteSupport(qa_id){
+         if(confirm('정말 삭제하시겠습니까?')){
+            try{
+            const res= await axios({
+            method: "DELETE",
+            url: `/supportMain/${qa_id}`,
+            
+         });
+      
+            alert('삭제되었습니다');
+            window.location.href='/supportMain'
+         
+
+            }catch(error){
+               console.log("support에서 게시글 등록 오류 > ", error);
+            };
+         }else{
+            return;
+         }
+         
+      }
+
+      
+   </script>
+   <script>feather.replace()</script>
+</body>
+</html>

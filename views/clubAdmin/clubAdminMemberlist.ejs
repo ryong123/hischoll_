@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 목록</title>
+  <link rel="stylesheet" href="/style.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+
+  </style>
+</head>
+
+
+
+
+<body>
+  <%- include('../component/header')%>
+  <main class="container">
+     <% for(let i=0; i<data.length;i++){ %>
+  
+ 
+        <!-- 회원 카드 목록 -->
+        <div class="list" onclick="showMemberDetail('<%=data[i].userid_num%>')">
+          <div class="list-title" onclick="showMemberDetail('<%=data[i].userid_num%>')"><%= `${userInfo[i]}` %></div>
+          <div class="list-content" onclick="showMemberDetail('<%=data[i].userid_num%>')">가입일: <%=data[i].updatedAt.getFullYear()%>년 <%=data[i].updatedAt.getMonth()+1%>월 <%=data[i].updatedAt.getDate()%>일</div>
+        
+        </div>
+        <!-- 추가 회원 카드 반복 -->
+     
+      <% } %>
+      
+    </main>
+
+
+  <script>
+console.log('<%=userInfo%>')
+   function showMemberDetail(userid_num){
+      window.location.href=`/clubAdminMemberDetail/<%=club_id%>/${userid_num}`
+   }
+  </script>
+
+
+</body>
+
+</html>

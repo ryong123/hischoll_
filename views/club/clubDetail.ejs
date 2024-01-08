@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>동아리 상세</title>
+
+    
+    <link rel="stylesheet" href="/style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      
+    </style>
+    
+  </head>
+
+  <body>
+    <%- include('../component/header')%>
+    <main class="container">
+      <div class="input">
+        <label for="clubName">동아리 이름</label>
+        <div class="list-title"><%=data.club_name%></div>
+      </div>
+
+      <div class="input">
+        <label for="clubDescription">동아리 설명</label>
+        <div class="list-title"><%=data.description%></div>
+      </div>
+
+      <div class="input">
+        <label for="info-keyword">키워드</label>
+        <div id="info-keyword"></div>
+      </div>
+
+      <div class="input">
+        <label for="clubLimit">제한 인원</label>
+        <div class="list-title"><%=data.limit%></div>
+      </div>
+
+      <div class="input">
+        <label for="clubLocation">활동 지역</label>
+        <div class="list-title"><%=data.location%></div>
+      </div>
+
+      
+      
+     
+
+
+  
+        <div class="cta">
+          <button id="clubApply" class="btn btn-primary" onclick="showApplyForm()">
+            가입 신청
+          </button>
+        </div>
+        
+ 
+    </main>
+
+
+    <script>
+      // 키워드 -> 해시태그로 보여주기
+      const keyword = '<%=data.keyword%>';
+      let keywords = keyword.replace(/\s/g, "");
+      const keywordsArray = keywords.split(",");
+      const keywordSpan = document.getElementById('info-keyword');
+      for (i=0; i<keywordsArray.length; i++){
+        newSpan=document.createElement('span');
+        newSpan.className = 'hashtag'
+        newSpan.innerText='#'+keywordsArray[i];
+        keywordSpan.appendChild(newSpan);
+      };
+      
+
+
+
+
+
+      // 가입하기 버튼 비활성화 확인
+      console.log("<%=isMember%>");
+      if ("<%=isMember%>" == "true") {
+        document.querySelector("#clubApply").disabled = true;
+        document.querySelector("#clubApply").innerText =
+          "이미 가입한 동아리입니다!";
+      } else if ("<%=isMember%>" == "false") {
+        document.querySelector("#clubApply").disabled = true;
+        document.querySelector("#clubApply").innerText =
+          "이미 가입신청된 동아리입니다!";
+      } else if ("<%=clubNum.length%>" >= 3) {
+        document.querySelector("#clubApply").disabled = true;
+        document.querySelector("#clubApply").innerText =
+          "동아리는 3개까지만 가입 가능합니다!";
+      }
+      function showApplyForm() {
+        const url = `/clubApply/<%=data.club_id%>`;
+        window.location.href = url;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>홈 화면</title>
+  <!-- <link rel="stylesheet" href="/home.css" /> -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    .slider {
+      width: 100%;
+      min-width: 70%;
+      height: 150px;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    .footer {
+      background-color: #f3f3f3;
+      color: #333;
+      text-align: center;
+      padding: 20px 0;
+      font-size: 14px;
+
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      padding: 0 20px;
+    }
+
+    .footer-logo {
+      width: 75px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <%- include('./component/header-main') %>
+    <div class="main-container"></div>
+    <main class="container">
+      <h2>내 동아리</h2>
+      <div class="">
+
+        <% if(typeof myClubs !=='undefined' && myClubs) { %>
+          <% if(myClubs.length==0) { %>
+            <!-- <span>가입한 동아리가 없어요</span> -->
+            <% } else { %>
+              <% for(i=0; i < myClubs.length; i++) { %>
+                <a class="club-list" href="/myclubMain/<%= myClubs[i].club_id %>">
+
+                  <img
+                    src="https://media.istockphoto.com/id/1125924193/ko/%EC%82%AC%EC%A7%84/%EB%BD%80%EB%A1%9C%EB%A1%9C-%EC%9E%91%EC%9D%80-eudyptula-korora-%EB%A7%88-%EC%98%A4%EB%A6%AC%EC%97%90.jpg?s=1024x1024&w=is&k=20&c=zleEMlDUlF8bbvVN4V3AU9eAGqycmZL6SXwIipK3Uz8="
+                    alt="Description of the image">
+                  <div class="club-box">
+                    <h3 class="list-title container-title">
+                      <%= myClubs[i].club_name %>
+                    </h3>
+                    <p class="list-content description">
+                      지역 : <%= myClubs[i].location %>
+                    </p>
+                    <p class="list-content description">
+                      동아리 설명 : <%= myClubs[i].description %>
+                    </p>
+                  </div>
+
+      </div>
+      </a>
+      <% } %>
+        <% } %>
+          <% } else { %>
+            <span>불러오기 실패</span>
+            <% } %>
+              <br />
+
+              <!-- 광고 -->
+              <!-- <div class="slider">
+          <img src="https://i.pinimg.com/564x/5b/d5/6c/5bd56cc467c092e742775df9f47aaa7a.jpg" alt="" class="slide">
+          <img src="https://i.pinimg.com/564x/61/54/f1/6154f1739549c5c1d00da1374f63a802.jpg" alt="" class="slide">
+          <img src="https://www.cuk.edu/type/common/img/kor/info/schoolAdCollect_01_img12.png" alt="" class="slide">
+        </div> -->
+
+              <br>
+
+              <div class="list-container">
+                <h2 class="label">전체 동아리</h2>
+                <% if(typeof allClubs !=='undefined' && allClubs) { %>
+                  <% for(i=0; i < allClubs.length; i++) { %>
+                    <a class=" card-container" href="/clubDetail/<%= allClubs[i].club_id %>">
+                      <div class="card-image">
+                        <img
+                          src="https://media.istockphoto.com/id/1125924193/ko/%EC%82%AC%EC%A7%84/%EB%BD%80%EB%A1%9C%EB%A1%9C-%EC%9E%91%EC%9D%80-eudyptula-korora-%EB%A7%88-%EC%98%A4%EB%A6%AC%EC%97%90.jpg?s=1024x1024&w=is&k=20&c=zleEMlDUlF8bbvVN4V3AU9eAGqycmZL6SXwIipK3Uz8="
+                          alt="Description of the image">
+                      </div>
+                      <div class="card-content">
+                        <h3 class="list-title container-title">
+                          <%= allClubs[i].club_name %>
+                        </h3>
+                        <p class="list-content card-text">
+                          <%= allClubs[i].location %>
+                        </p>
+                        <p class="list-content card-text">
+                          <%= allClubs[i].description %>
+                        </p>
+                      </div>
+                    </a>
+                    <% } %>
+                      <% } %>
+              </div>
+              <div class="btnCenter"><button class="btn-sm btn-neutral" onclick="toLink('/clubMain')">전체보기</button>
+              </div>
+              </div>
+
+              <footer class="footer">
+                <div class="footer-content">
+                  <img src="/icons/hischool_logo.svg" alt="회사 로고" class="footer-logo">
+                  <p>(주)Introverted Innovators</p>
+                  <p>대표명: 홍길동</p>
+                  <p>주소: 서울특별시 강남구 예시동 123-45</p>
+                  <p>이메일: i@example.com | 전화번호: 123-456-7890</p>
+                  <p>&copy; (2023)Introverted Innovators. 모든 권리 보유.</p>
+                </div>
+              </footer>
+    </main>
+    <script>
+      function toLink(link) {
+        document.location.href = link;
+      }
+
+      let slides = document.getElementsByClassName("slide");
+      let index = 0;
+
+      // function changeSlide() {
+      //   for (let i = 0; i < slides.length; i++) {
+      //     slides[i].style.display = "none";
+      //   }
+      //   index++;
+      //   if (index > slides.length) { index = 1; }
+      //   slides[index - 1].style.display = "block";
+      //   setTimeout(changeSlide, 3000); // 3초마다 함수를 호출
+      // }
+
+      // changeSlide(); // 함수 실행
+    </script>
+
+
+</body>
+
+</html>

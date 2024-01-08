@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>마이페이지 상세</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    .profile{
+      display: flex;
+      gap: 25px;
+    }
+    .userInfo{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #btn-dm{
+      padding: 0.3rem;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <%- include('../component/header')%>
+    <main class="container">
+      <div class="list">
+        
+        <div class="profile">
+          <div class="img">
+            <% if (profileImg) { %>
+              <img src="<%= profileImg %>" alt="프로필 이미지" width="80" />
+              <% } else { %>
+                <img src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png" alt="프로필 이미지" width="80" />
+                <% } %>
+          </div>
+          
+                <div  class="userInfo">
+                  <div class="list-title">
+                    <%= data.nickname %>
+                  </div>
+                  <div class="list-content">
+                    <%= data.school %>
+                  </div>
+                  <!-- 소켓 확인용 -->
+                  <button class="btn-sm btn-ghost" id="btn-dm" onclick="location.href='/chat/<%= room %>'">쪽지보내기</button>
+                </div>
+        </div>
+      </div>
+        
+        <div class="input">
+          <label for="introduction">자기소개</label>
+          <% if(typeof clubProfile !== undefined && clubProfile) { %>
+            <input type="text" class="textField" id="introduction" value="<%= clubProfile.introduction %>">
+              
+            </input>
+            </div>
+          <% } else { %>
+            <div>
+              자기소개가 없습니다
+            </div>
+            <% } %>
+          
+        
+      </main>
+
+
+    <!--# 프로필 미리보기 -->
+    <script>
+      
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("preview").src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById("preview").src = "";
+        }
+      }
+      
+    </script>
+    <script>feather.replace()</script>
+
+
+</body>
+
+</html>
+
+
+      <!--  임시 코드 입니다 ,,, 소켓 확인용 -->
+      <script>
+        // const nick = document.getElementsByClassName("profile-name").innerText;
+        
+        // async function move() {
+        //   console.log("nick >>>>> ", nick)
+        //   await axios({
+        //     method : "get",
+        //     url: `/chat`,
+        //     params: {
+        //       nickname: `<%= data.nickname %>`,
+              
+        //     }
+        //   })
+          
+        //   window.location.href = '/chat';
+        // }
+    
+

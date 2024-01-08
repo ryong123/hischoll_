@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하이스쿨 - 내 동아리 전체 조회</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/club.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <%- include('../component/header')%>
+    <div class="container">
+      <h1> 내 동아리 전체 조회 </h1>
+      <% if (data.length==0) { %>
+        <div>아직 가입한 동아리가 없습니다! </div>
+      
+      <% }else{ %>
+      <% for(let i=0; i<data.length;i++){ %>
+          <div class="list" onclick="showMyclubMain('<%=data[i].club_id%>')" >
+      
+            <div class="list-title" >
+              <%= data[i].club_name%>
+            </div>
+            <div class="list-content">
+              <%=data[i].description%>
+            </div>
+        </div>
+          <% } %>
+          <% } %>
+    </div>
+
+        <script>
+            function showMyclubMain(club_id){
+                window.location.href=`/myclubMain/${club_id}`
+            }
+        </script>
+</body>
+</html>
