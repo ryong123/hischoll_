@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+    <!-- feather-icons CDN -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      
+
+
+
+
+
+    </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div class="menu-icon" onclick="toggleSidebar()">
+        <i data-feather="menu"></i>
+        </div>
+        <div class="close-menu" onclick="toggleSidebar()">
+          <i data-feather="x-circle"></i></div>
+        
+      <div class="logo">하이스쿨</div>
+      <div class="menu-bar">
+        <a href="/home"><div>홈</div></a>
+        <a href="#"><div>자유게시판</div></a>
+        <a href="#"><div>마이페이지</div></a>
+        <a href="#"><div>고객센터</div></a>
+      </div>
+      <div class="nav-btn">
+        <button>회원가입</button>
+        <button>로그인</button>
+      </div>
+      <div class="settings-icon">
+        <i data-feather="send"></i></div>
+    </nav>
+  </header>
+  <div id="sidebar" class="sidebar">
+    <!-- <div  onclick="toggleSidebar()">
+      <i data-feather="menu"></i></div> -->
+    <a href="/home">홈</a>
+    <a href="#">자유게시판</a>
+    <a href="#">마이페이지</a>
+    <a href="#">고객센터</a>
+
+    <!-- 추가적인 관리 항목 링크들 -->
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle('active');
+      document.querySelector(".close-menu").classList.toggle('visible');
+      document.querySelector('.menu-icon').classList.toggle('hidden');
+
+    }
+    feather.replace();
+  </script>
+</body>
+</html>

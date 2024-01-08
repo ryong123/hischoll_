@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>검색 및 해시태그</title>
+  <link rel="stylesheet" href="./전체동아리.css">
+</head>
+
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div class="menu-icon">☰</div>
+      <h1 class="logo">전체 동아리</h1>
+      <div class="settings-icon">⚙</div>
+    </nav>
+  </header>
+
+  <div class="search-container">
+    <input type="search" class="search-bar" placeholder="검색">
+  </div>
+
+  <div class="hashtags">
+    <!-- 해시태그 예시입니다. 클릭 이벤트와 백엔드 연결을 위한 클래스를 추가할 수 있습니다. -->
+    <span class="hashtag">#거리 30Km 이내</span>
+    <span class="hashtag">#분야 과학</span>
+    <span class="hashtag">#지역 서울 마포구</span>
+  </div>
+
+  <!-- 여기에 더 많은 콘텐츠를 추가할 수 있습니다. -->
+
+  <!-- 모달 팝업의 HTML 구조 (숨겨져 있으며, 클릭 시 활성화 될 수 있도록) -->
+  <div class="modal" id="codeModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>코드를 입력하세요</p>
+      <input type="text" placeholder="코드 입력">
+      <button type="button">확인</button>
+    </div>
+  </div>
+
+  <script>
+
+
+    // JavaScript 예시 (모달 창을 여닫는 기능)
+    document.querySelector('.user-icon').addEventListener('click', function () {
+      document.getElementById('codeModal').classList.add('active');
+    });
+
+    document.querySelector('.modal .close').addEventListener('click', function () {
+      document.getElementById('codeModal').classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판 예시</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f7f7f7;
+    }
+
+    .board {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+      padding: 20px;
+    }
+
+    .comment {
+      border-bottom: 1px solid #e1e1e1;
+      padding: 10px 0;
+    }
+
+    .comment:last-child {
+      border-bottom: none;
+    }
+
+    .comment-body {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .comment-footer {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .like-counter {
+      display: inline-block;
+      margin-right: 10px;
+      color: #555;
+    }
+
+    .timestamp {
+      color: #aaa;
+    }
+
+    .like-button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      display: inline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="board">
+    <div class="comment">
+      <div class="comment-body">고등학교 졸업 후 진로 고민 중이에요
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente repudiandae numquam quisquam velit facilis
+          nihil, accusantium, commodi quia dolorem voluptates ratione fugit hic pariatur deleniti ducimus itaque
+          voluptate modi corrupti!</p>
+      </div>
+      <div class="comment-footer">
+        <span class="like-counter">👍 10</span>
+        <span class="timestamp">2023.10.21 오전 9시 33분</span>
+      </div>
+      <div class="댓글">
+        댓글임 댓글임
+      </div>
+
+    </div>
+    <!-- 여기에 더 많은 댓글을 반복할 수 있습니다. -->
+  </div>
+
+</body>
+
+</html>

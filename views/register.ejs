@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>하이스쿨 - 회원가입</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      .search-results {
+        position: absolute;
+        width: 100%;
+        margin-top: 90px;
+        cursor: pointer;
+        border: 1px solid var(--color-gray-200);
+        border-radius: 4px;
+        background-color: white;
+        overflow-y: scroll;
+        height: 200px;
+        z-index: 2;
+      }
+
+      .no-results {
+        padding: 12px 16px;
+        text-align: center;
+        color: var(--color-gray-500);
+      }
+
+      .schoolList {
+        padding: 12px 16px;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .schoolList h3 {
+        font-size: 16px;
+        color: var(--color-gray-600);
+        font-weight: 500;
+      }
+
+      .schoolList span {
+        font-size: 14px;
+        color: var(--color-gray-400);
+      }
+
+      .schoolList:hover {
+        transition: all 0.5s;
+        background-color: var(--color-gray-100);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <%- include('./component/header')%>
+      <form name="login">
+        <div class="input">
+          <label for="userid">아이디</label>
+          <input type="text" id="userid" class="textField" value="admin" />
+        </div>
+        <div class="input">
+          <label for="name">이름</label>
+          <input type="text" id="name" class="textField" value="관리자" />
+        </div>
+        <div class="input">
+          <label for="school">학교</label>
+          <input
+            type="text"
+            id="school"
+            class="textField"
+            oninput="showResult(); searchSchool();"
+            onfocus="resetSchoolInput();"
+            value="가락고등학교"
+          />
+          <div id="schoolSearchResults" class="search-results hidden"></div>
+        </div>
+        <div class="row2">
+          <div class="input">
+            <label for="grade">학년</label>
+            <input
+              type="number"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              id="grade"
+              class="textField noscroll"
+              value="1"
+            />
+          </div>
+          <div class="input">
+            <label for="classid">반</label>
+            <input
+              type="number"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              id="classid"
+              class="textField noscroll"
+              value="2"
+            />
+          </div>
+        </div>
+        <div class="input">
+          <label for="birthday">생일</label>
+          <input
+            type="date"
+            id="birthday"
+            class="textField"
+            value="2000-10-10"
+          />
+        </div>
+        <div class="input">
+          <label for="phone">전화번호</label>
+          <input type="tel" id="phone" class="textField" value="01012341234" />
+          <span class="helpText"
+            ><i data-feather="info" width="16"></i>- 를 제외하고
+            입력해주세요</span
+          >
+        </div>
+
+        <div class="input">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            class="textField"
+            value="12341234"
+          />
+          <span class="helpText"
+            ><i data-feather="info" width="16"></i>8자리 이상, 16자리 이하</span
+          >
+        </div>
+        <div class="input">
+          <label for="passwordCheck">비밀번호 확인</label>
+          <input
+            type="password"
+            id="passwordCheck"
+            class="textField"
+            value="12341234"
+          />
+        </div>
+      </form>
+
+      <div class="cta">
+        <button
+          type="button"
+          class="btn btn-primary"
+          onclick="handleRegister()"
+        >
+          회원가입
+        </button>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+    </script>
+
+    <script>
+      let allSchoolData = [];
+
+      function showResult() {
+        document
+          .getElementById("schoolSearchResults")
+          .classList.remove("hidden");
+      }
+
+      async function loadSchoolData() {
+        try {
+          const response = await axios.get(
+            "https://open.neis.go.kr/hub/schoolInfo?ATPT_OFCDC_SC_CODE=B10&SCHUL_KND_SC_NM=%EA%B3%A0%EB%93%B1%ED%95%99%EA%B5%90&Type=json&pIndex=1&pSize=1000&KEY=bc9bdb6745984db1894cbdd79cc0f628"
+          );
+          allSchoolData = response.data.schoolInfo[1].row;
+          // console.log(allSchoolData);
+        } catch (error) {
+          console.error("학교 정보 가져오기 실패: ", error);
+        }
+      }
+
+      async function searchSchool() {
+        const searchText = document
+          .getElementById("school")
+          .value.toLowerCase();
+        const filteredSchools = allSchoolData.filter((school) =>
+          school.SCHUL_NM.toLowerCase().includes(searchText)
+        );
+
+        const resultsContainer = document.getElementById("schoolSearchResults");
+        if (filteredSchools.length === 0) {
+          resultsContainer.innerHTML = `<div class='no-results'>검색 결과가 없습니다</div>`;
+        } else {
+          resultsContainer.innerHTML = filteredSchools
+            .map(
+              (school) =>
+                `<div class="schoolList" onclick="selectSchool('${school.SCHUL_NM}')">
+            <h3>${school.SCHUL_NM}</h3>
+            <span>${school.ORG_RDNMA}</span>
+          </div>`
+            )
+            .join("");
+        }
+      }
+
+      function selectSchool(schoolName) {
+        document.getElementById("school").value = schoolName;
+        document.getElementById("schoolSearchResults").innerHTML = "";
+        document.getElementById("schoolSearchResults").classList.add("hidden");
+      }
+
+      function resetSchoolInput() {
+        document.getElementById("school").value = "";
+        document.getElementById("schoolSearchResults").innerHTML = "";
+        document.getElementById("schoolSearchResults").classList.add("hidden");
+        displayAllSchools();
+      }
+
+      function displayAllSchools() {
+        const resultsContainer = document.getElementById("schoolSearchResults");
+        resultsContainer.innerHTML = allSchoolData
+          .map(
+            (school) =>
+              `<div class="schoolList" onclick="selectSchool('${school.SCHUL_NM}')">
+          <h3>${school.SCHUL_NM}</h3>
+          <span>${school.ORG_RDNMA}</span>
+        </div>`
+          )
+          .join("");
+        showResult();
+      }
+
+      window.addEventListener("load", loadSchoolData);
+
+      document.addEventListener("click", function (event) {
+        const schoolInput = document.getElementById("school");
+        const searchResults = document.getElementById("schoolSearchResults");
+        const withinBoundaries =
+          event.composedPath().includes(schoolInput) ||
+          event.composedPath().includes(searchResults);
+
+        if (!withinBoundaries) {
+          searchResults.classList.add("hidden");
+        }
+      });
+
+      const form = document.forms["login"];
+
+      async function handleRegister() {
+        const userid = form.userid.value;
+        const name = form.name.value;
+        const school = form.school.value;
+        const grade = form.grade.value;
+        const classid = form.classid.value;
+        const birthday = form.birthday.value;
+        const phone = form.phone.value;
+
+        // console.log(userid, name, school, grade, classid, birthday, phone);
+
+        try {
+          const result = await axios({
+            method: "POST",
+            url: "/auth/register",
+            headers: {
+              // "Content-Type": "application/formData",
+            },
+            data: {
+              // userid: userid,
+              // name: name,
+              // school: school,
+              // grade: grade,
+              // classid: classid,
+              // phone: phone,
+              // birthday: birthday,
+              userid: form.userid.value,
+              name: form.name.value,
+              school: form.school.value,
+              grade: form.grade.value,
+              classid: form.classid.value,
+              birthday: form.birthday.value,
+              phone: form.phone.value,
+              password: form.password.value,
+            },
+          });
+          console.log(result);
+          console.log(result.data.success);
+          if(result.data.success === true) {
+            alert('회원가입 성공')
+            document.location.href = '/login'
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      // number 스크롤 방지
+      document.addEventListener("wheel", function (event) {
+        if (
+          document.activeElement.type === "number" &&
+          document.activeElement.classList.contains("noscroll")
+        ) {
+          document.activeElement.blur();
+        }
+      });
+    </script>
+  </body>
+</html>

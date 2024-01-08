@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+   <!-- 생략 (head 내용) -->
+
+   <!-- axios CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+   <%- include('../component/header') %>
+      <div class="board">
+         <!-- 게시글 세부 내용 -->
+         <div class="post-detail">
+            <h2>
+               <%= data.title %>
+            </h2>
+            <p>
+               <%= data.content %>
+            </p>
+            <!-- 게시글 작성 시간 등의 메타 정보도 추가 있습니다. -->
+         </div>
+         <div>댓글보기</div>
+         <div>댓글작성
+            <input type="text" id="commentContent" placeholder="댓글을 입력하세요">
+            <button onclick="submitComment()">댓글등록</button>
+         </div>
+         <div>댓글삭제</div>
+
+
+
+         <button class="btn btn-primary" onclick="editPost('<%= data.post_id %>')">수정</button>
+
+         <!-- 댓글 목록 -->
+         <% clubPostComment.forEach(comment=> { %>
+            <div class="comment">
+               <div class="comment-body">
+                  <%= comment.content %>
+               </div>
+               <button onclick="deleteComment('<%= comment.id %>')">삭제</button> <!-- 삭제 버튼 -->
+            </div>
+            <% }); %>
+      </div>
+      <script>
+
+
+         // (async function () {
+         //    axios({
+         //       method: get,
+         //       url: 'myclub/myclubPostDetail/1/40'
+
+         //    }).then(res => {
+         //       console.log(data);
+         //    });
+         // });
+         // 댓글 작성
+         // POST  /myclubPostDetail/:club_id/:post_id : 동아리 게시글 댓글 생성
+         function submitComment() {
+            const content = document.getElementById('commentContent').value;
+            const clubId = 1; // 예시 데이터, 실제 데이터로 변경 필요
+            const postId = '<%= data.post_id %>'; // ejs를 사용하여 서버로부터 받은 post_id
+
+            axios.post(`/myclubPostDetail/${clubId}/${postId}`, {
+               club_id: clubId,
+               post_id: postId,
+               comment_name: "수정", // 현재 로그인한 사용자의 이름
+               content: content
+            })
+               .then(function (res) {
+                  console.log(res.newClubPostComment);
+                  const newComment = res.data; // 새 댓글 데이터
+
+                  // 새 댓글 요소 생성
+                  const commentElement = document.createElement('div');
+                  commentElement.className = 'comment';
+                  commentElement.innerHTML = `
+         <div class="comment-body">${newComment.content}</div>
+         <button onclick="deleteComment('${newComment.id}')">삭제</button>
+      `;
+
+                  // "수정" 텍스트 바로 아래에 새 댓글 요소 삽입
+                  const editButton = document.querySelector('.btn.btn-primary');
+                  editButton.parentNode.insertBefore(commentElement, editButton.nextSibling);
+
+                  // 입력 필드 초기화
+                  document.getElementById('commentContent').value = '';
+               })
+               .catch(function (error) {
+                  console.error('Comment submit error:', error);
+                  alert('댓글 작성 중 오류가 발생했습니다.');
+               });
+         }
+         // 댓글 삭제
+         // DELETE /myclubPostDetail/:club_id/:post_id  : 동아리 게시글 삭제
+
+         function deletepost() {
+            if (confirm('게시글을 삭제하시겠습니까?')) {
+               axios.delete('/myclubPostDetail/1/<%=data.post_id%>/comment/${commentId}`')
+                  .then(function (res) {
+                     if (response.data.isDeleted) {
+                        alert('게시글이 삭제되었습니다.');
+                        window.location.href = '/myClubPostMain/1'; // 게시글 목록으로 리디렉션
+                     } else {
+                        alert('게시글 삭제에 실패했습니다.');
+                     }
+                  })
+                  .catch(function (err) {
+                     alert('게시글 삭제 중 오류가 발생했습니다.');
+                     console.error('Delete error:', error);
+                  });
+            }
+         }
+
+         // clubId, postId
+         function editPost(post_id) {
+            window.location.href = `/myclubEditPost/1/${post_id}`; // 수정 페이지로 이동
+         }
+
+
+      </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <!-- 생략 (head 내용) -->
+
+]
+<head>
+  <!-- 생략 (head 내용) -->
+  <!-- axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <%- include('../component/header') %>
+    <div class="board">
+      <!-- 수정 폼 -->
+      <form id="editForm">
+        <div>
+          <label for="title">제목</label>
+          <input type="text" id="title" value="<%= data.title %>">
+        </div>
+        <div>
+          <label for="content">내용</label>
+          <textarea id="content"><%= data.content %></textarea>
+        </div>
+        <!-- <div>
+          <label for="image">이미지 URL</label>
+          <input type="text" id="image" value="<%= data.image %>">
+        </div> -->
+        <button type="button" onclick="submitEdit('<%= data.post_id %>')">수정하기</button>
+
+      </form>
+      <button class="btn btn-primary" onclick="deletepost('<%= data.post_id%>')">삭제</button>
+    </div>
+
+    <script>
+      function submitEdit(post_id) {
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+        // const image = document.getElementById('image').value;
+
+        axios.patch(`/myclubEditPost/1/${post_id}`, {
+          title: title,
+          content: content,
+          // image: image
+        })
+          .then(function (res) {
+            alert('게시글이 수정되었습니다.');
+            window.location.href = `/myclubPostDetail/1/${post_id}`;
+          })
+          .catch(function (err) {
+            console.error('Edit error:', err);
+            alert('게시글 수정 중 오류가 발생했습니다.');
+          });
+      }
+
+      function deletepost(post_id) {
+        if (confirm('게시글을 삭제하시겠습니까?')) {
+          axios.delete(`/myclubEditPost/1/${post_id}`)
+            .then(function (res) {
+              if (res.data) {
+                alert('게시글이 삭제되었습니다.');
+                window.location.href = '/myClubPostMain/1'; // 게시글 목록으로 리디렉션
+              } else {
+                alert('게시글 삭제에 실패했습니다.');
+              }
+            })
+            .catch(function (error) {
+              alert('게시글 삭제 중 오류가 발생했습니다.');
+              console.error('Delete error:', error);
+            });
+        }
+      }
+    </script>
+  </body>
+</html>

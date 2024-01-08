@@ -1,0 +1,72 @@
+/* 전체 페이지 스타일 */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+/* 헤더 스타일 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.menu-icon,
+.settings-icon {
+  cursor: pointer;
+}
+
+.logo {
+  text-align: center;
+}
+
+/* 가입 요청 목록 스타일 */
+.request-list {
+  padding: 20px;
+}
+
+.request {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.request-info {
+  flex-grow: 1;
+}
+
+.requester-name {
+  font-weight: bold;
+}
+
+.request-text {
+  margin-top: 5px;
+}
+
+.btn-confirm {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-confirm:hover {
+  background-color: #0056b3;
+}

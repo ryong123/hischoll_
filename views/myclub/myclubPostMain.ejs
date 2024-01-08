@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>동아리 게시판</title>
+   <link rel="stylesheet" href="/style.css" />
+   <link rel="stylesheet" href="/myClubPostMain.css" />
+   <!-- axios CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+   <%- include('../component/header')%>
+      <button onclick="createPost()" ()id="plus-button" class="plus-button">+</button>
+
+      <!-- 게시물 목록 -->
+
+      <% for(let i=0; i < data.length; i++) { %>
+         <div class="list" onclick="showDetail(' <%= data[i].post_id %>')">
+            <div class="list-title">
+               <%= data[i].title %>
+            </div>
+            <div class="list-content">
+               <%= data[i].content %>
+            </div>
+         </div>
+         <% } %>
+            <script>
+
+               function showDetail(post_id) {
+                  window.location.href = `/myclubPostDetail/1/${post_id}`;
+               }
+
+               function createPost() {
+                  window.location.href = `/myclubNewPost/1`;
+               }
+
+
+
+            </script>
+</body>
+
+</html>

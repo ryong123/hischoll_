@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>하이스쿨 - 동아리 관리</title>
+   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminMain.css">
+</head>
+<body>
+   <%- include('../component/header')%>
+   <h1>동아리 관리</h1>
+   <a href="/clubAdminApplyList/<%=data.club_id%>">가입 요청 보기</a><br>
+   <a href="/clubAdminEdit/<%=data.club_id%>">동아리 정보 관리</a><br>
+   <a href="/clubAdminMemberList/<%=data.club_id%>">회원 목록</a>
+</body>
+<script>
+   console.log('<%=data%>');
+</script>
+</html>

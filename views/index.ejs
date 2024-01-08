@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>하이스쿨</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <%- include('./component/header')%>
+      <br />
+      <a href="./clubSchedule">달력테스트버튼</a>
+      <br />
+      <a href="/home">홈 화면으로 이동</a>
+      <a href="./myClubPostMain">동아리게시판</a>
+      <br>
+
+      <form action="/upload" enctype="multipart/form-data" method="post">
+        <label for="profileImg">이미지 업로드</label>
+        <input type="file" name="profileImg" id="profileImg" multiple>
+        <input type="submit" value="Upload" />
+      </form>
+      <br>
+
+      <div class="cta">
+        <a href="/register" class="btn btn-secondary">회원가입</a>
+        <a href="/login" class="btn btn-primary">로그인</a>
+      </div>
+    </div>
+  </body>
+</html>

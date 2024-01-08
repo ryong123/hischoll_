@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>동아리 개설</title>
+  <link rel="stylesheet" href="./동아리개설.css">
+</head>
+
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <div class="menu-icon">☰</div>
+      <h1 class="logo">홈</h1>
+      <div class="settings-icon">⚙</div>
+    </nav>
+  </header>
+
+  <main class="create-club">
+    <form name="create-club-form"class="create-club-form">
+      <label for="club-name">동아리 이름</label>
+      <input type="text" id="club-name" placeholder="과학 동아리" required>
+      <div id="name-error"></div>
+
+      <label for="category">분야</label>
+      <input type="text" id="category" placeholder="과학" required>
+      <div id="field-error"></div>
+
+      <label for="member-limit">인원 제한</label>
+      <input type="number" id="member-limit" placeholder="50" required>
+
+      <label for="keywords">키워드</label>
+      <input type="text" id="keywords" placeholder="과학, 로봇" required>
+
+      <label for="location">활동 지역</label>
+      <div class="location-input">
+        <select  id="city" required>
+          <option value="서울">서울</option>
+        </select>시
+        <select  id="district" required >
+          <option value="마포">마포</option>
+          <option value="종로">종로</option>
+          <option value="중">중</option>
+          <option value="용산">용산</option>
+          <option value="성동">성동</option>
+          <option value="노원">노원</option>
+          <option value="동대문">동대문</option>
+          <option value="중랑">중랑</option>
+          <option value="성북">성북</option>
+          <option value="강북">강북</option>
+          <option value="도봉">도봉</option>
+          <option value="은평">은평</option>
+          <option value="서대문">서대문</option>
+          <option value="양천">양천</option>
+          <option value="강서">강서</option>
+          <option value="금천">금천</option>
+          <option value="영등포">영등포</option>
+          <option value="동작">동작</option>
+          <option value="관악">관악</option>
+          <option value="서초">서초</option>
+          <option value="강남">강남</option>
+          <option value="송파">송파</option>
+          <option value="강동">강동</option>
+          <option value="서초">서초</option>
+          <option value="노원">노원</option>
+
+
+        </select>구
+      </div>
+
+      <button type="button" onclick="createClub()" class="btn-create">동아리 만들기</button>
+    </form>
+  </main>
+
+  <script>
+
+    // select 요소 선택
+let selectElement = document.getElementById('district');
+
+
+
+// option 요소들을 배열로 가져오기
+let optionsArray = Array.from(selectElement.options);
+
+// 가나다순으로 정렬
+optionsArray.sort(function(a, b) {
+  let textA = a.text.toUpperCase();
+  let textB = b.text.toUpperCase();
+  return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+});
+
+// 정렬된 배열을 select 요소에 적용
+optionsArray.forEach(function(option) {
+  selectElement.add(option);
+});
+    function createClub() {
+        //event.preventDefault();
+
+        const createClubForm = document.forms["create-club-form"];
+        console.log(createClubForm);
+
+        let clubName = createClubForm.elements["club-name"].value;
+        console.log(clubName);
+        // let clubDescription = createClubForm.elements['club-description'].value;
+        let clubCategory = createClubForm.elements["category"].value;
+        let clubMemberLimit = createClubForm.elements["member-limit"].value;
+        let clubKeywords = createClubForm.elements["keywords"].value;
+        let clubCity = createClubForm.elements["city"].value;
+        let clubDestrict = createClubForm.elements["district"].value;
+        console.log(`${clubCity}시 ${clubDestrict}구`)
+
+
+        // clubName 유효성 검사 -> 한글 있으면 최대 15자
+        const maxKoreanLength = 15;
+        const maxEnglishLength = 50;
+
+        const NameMaxLength = (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(clubName)) ? maxKoreanLength : maxEnglishLength;
+        console.log(NameMaxLength);
+
+        if(clubName.length > NameMaxLength){
+          let nameError=document.querySelector('#name-error');
+          console.log(nameError)
+
+          nameError.innerText='동아리이름은 한글 최대 15자, 영어 최대 50자까지 가능합니다';
+        }
+
+        // 분야 유효성 검사
+        const fieldMaxLength = 10;
+
+        if(clubCategory.length > fieldMaxLength){
+          let fieldError=document.querySelector('#field-error');
+
+
+          fieldError.innerText='분야는 최대 10글자로 입력하세요';
+        }
+    }
+  </script>
+</body>
+
+</html>

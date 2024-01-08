@@ -1,0 +1,35 @@
+.content {
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #f0f0f0;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-group p {
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .back-arrow {
+    cursor: pointer;
+    font-size: 24px;
+    position: absolute;
+    left: 10px;
+  }
+  

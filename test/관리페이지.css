@@ -1,0 +1,95 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+}
+/* 헤더바 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.menu-icon,
+.settings-icon {
+  cursor: pointer;
+}
+
+.logo {
+  text-align: center;
+}
+
+/* 헤더바 */
+
+/* 슬라이드 메뉴 스타일 */
+.sidebar {
+  height: 100%;
+  width: 0; /* 사이드바 크기를 0으로 시작 */
+  position: fixed;
+  z-index: 1; /* 화면 위에 표시 */
+  top: 0;
+  left: 0;
+  background-color: #111; /* 사이드바 배경 색상 */
+  overflow-x: hidden; /* 내용이 넘칠 경우 숨김 처리 */
+  padding-top: 60px; /* 상단 여백 */
+  transition: 0.5s; /* 애니메이션 효과 */
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar.active {
+  width: 250px; /* 활성화 시 사이드바 너비 */
+}
+
+/* 헤더 스타일 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.menu-icon {
+  cursor: pointer;
+}
+
+.logo {
+  text-align: center;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  margin-left: 60px; /* 햄버거 메뉴와 내용 사이의 여백 */
+  padding: 16px;
+}
+
+/* 스크린이 작을 때 스타일 */
+@media screen and (max-height: 450px) {
+  .sidebar {
+    padding-top: 15px;
+  }
+  .sidebar a {
+    font-size: 18px;
+  }
+}

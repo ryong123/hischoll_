@@ -1,0 +1,80 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+/* 헤더 스타일 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.menu-icon,
+.settings-icon {
+  cursor: pointer;
+}
+
+.logo {
+  text-align: center;
+}
+/* 헤더 스타일 */
+
+.back-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.chat-title {
+  margin-left: 20px;
+}
+
+.chat-list {
+  padding: 10px;
+}
+
+.chat-item {
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.chat-name {
+  padding: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-message {
+  padding: 15px;
+  color: #666;
+}
+
+@media (max-width: 768x) {
+  .chat-header {
+    padding: 10px;
+  }
+
+  .chat-list {
+    padding: 5px;
+  }
+
+  .chat-item {
+    margin-bottom: 8px;
+  }
+
+  .chat-name,
+  .chat-message {
+    padding: 10px;
+  }
+}

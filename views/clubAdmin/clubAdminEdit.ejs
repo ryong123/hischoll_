@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>동아리 정보 관리</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminEdit.css">
+  <style>
+
+  </style>
+</head>
+
+
+<body>
+   <%- include('../component/header')%>
+  <div class="content">
+    <div class="group">
+      <h2>동아리 이름</h2>
+      <input  id="editClubName" placeholder="<%=data.club_name%>">
+    </div>
+    <div class="group">
+      <h2>동아리 설명</h2>
+      <input id="editClubName" placeholder="<%=data.club_name%>">
+    </div>
+    <div class="group">
+      <h2>관리자</h2>
+      <p><%=data.leader_id%></p>
+      <button onclick="trasferLeader()">동아리장 위임</button>
+    </div>
+    <div class="group">
+      <h2>회원수</h2>
+      <p><%=data.limit%></p>
+    </div>
+    <button onclick="patchClubInfo()">수정</button>
+  </div>
+
+  <script>
+   function trasferLeader(){
+      window.location.href= "/clubAdminTransfer/<%=data.club_id%>"
+   }
+   async function patchClubInfo(){
+    try {
+          const res = await axios({
+            method: "PATCH",
+            url: `/clubAdminEdit/<%=data.club_id%>`,
+            data: {
+              club_name: clubName,
+              field: clubCategory,
+              keyword: clubKeywords,
+            },
+          });
+          console.log(res);
+          
+        } catch (error) {
+          console.log("createAdminEdit 에서 axios error > ", error);
+        }
+
+   }
+  </script>
+</body>
+</html>

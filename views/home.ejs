@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>홈 화면</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/home.css" />
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+  </head>
+
+  <body>
+    <%- include('./component/header')%>
+
+    <main class="content">
+      <a href="/clubAdminMain">동아리 관리 페이지(test)</a>
+      <section class="card">
+        <h2>내 동아리 목록</h2>
+        <div class="card-item">
+          과학 동아리
+          <p>설명ㅇㅇㅇㅇㅇㅇㅇㅇ</p>
+        </div>
+        <div class="card-item">
+          과학 동아리
+          <p>설명ㅇㅇㅇㅇㅇㅇㅇㅇ</p>
+        </div>
+      </section>
+      <section class="card">
+        <h2>전체 일정</h2>
+        <div class="card-item">
+          스터디
+          <p>지구과학 스터디입니다.</p>
+        </div>
+        <div class="card-item">
+          스터디
+          <p>지구과학 스터디입니다.</p>
+        </div>
+        <div class="card-item">과제 동아리</div>
+        <div class="card-item">과제 동아리</div>
+      </section>
+
+      <section class="card">
+        <h2>전체 동아리</h2>
+        <div class="card-item">
+          스터디
+          <p>설명설명~~~.</p>
+        </div>
+        <div class="card-item">
+          스터디
+          <p>설명설명~~~.</p>
+        </div>
+        <a href="/clubMain">전체보기</a>
+      </section>
+    </main>
+
+    <script>
+      function getCookie(name) {
+        let matches = document.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      console.log(getCookie("jwt"));
+    </script>
+
+    <script>
+      const allCookies = Cookies.get();
+      console.log(allCookies);
+    </script>
+  </body>
+</html>

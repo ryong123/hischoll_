@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>익명 게시판</title>
+  <link rel="stylesheet" href="./익명게시판.css">
+  <!-- axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<header class="header">
+  <nav class="navbar">
+    <div class="menu-icon">☰</div>
+    <h1 class="logo">익명 게시판</h1>
+    <div class="settings-icon">⚙</div>
+  </nav>
+</header>
+
+<body>
+  <div id="plus-button" class="plus-button">+</div>
+
+  <!-- 모달 배경 -->
+  <div id="modal-background" class="modal-background" style="display:none;"></div>
+
+  <!-- 모달 창 -->
+  <div id="modal" class="modal" style="display:none;">
+    <!-- 모달 내용 -->
+    <div class="modal-content">
+      <!-- 모달 닫기 버튼 -->
+      <span id="close-modal" class="close-modal">&times;</span>
+
+      <!-- 글쓰기 폼 -->
+      <form id="post-form">
+        <h2>게시글 작성</h2>
+        <input type="text" id="post-title" name="title" placeholder="제목을 입력하세요">
+        <textarea id="post-content" name="content" placeholder="내용을 입력하세요"></textarea>
+        <button type="submit">등록하기</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 상세 게시글 보기를 위한 모달 추가 -->
+  <div id="detail-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span id="detail-close-modal" class="close-modal">&times;</span>
+      <h2 id="detail-post-title"></h2>
+      <p id="detail-post-content"></p>
+    </div>
+  </div>
+
+  <!-- 게시물 목록 -->
+  <div id="posts-container">
+    <!-- 게시물들이 여기에 추가됩니다 -->
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 페이지 로드 시 게시물 목록을 생성하는 함수 호출
+      addPosts();
+
+      // 모달 관련 이벤트 리스너 추가
+      document.getElementById('plus-button').addEventListener('click', openModal);
+      document.getElementById('close-modal').addEventListener('click', closeModal);
+      document.getElementById('modal-background').addEventListener('click', closeModal);
+
+      // 게시물 등록 폼 제출 이벤트 리스너
+      document.getElementById('post-form').addEventListener('submit', submitPostForm);
+
+      // 상세 게시글 보기 모달 닫기 이벤트 리스너
+      document.getElementById('detail-close-modal').addEventListener('click', function () {
+        document.getElementById('detail-modal').style.display = 'none';
+      });
+    });
+
+    // 모달 열기 함수
+    function openModal() {
+      document.getElementById('modal-background').style.display = 'block';
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    // 모달 닫기 함수
+    function closeModal() {
+      document.getElementById('modal-background').style.display = 'none';
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // 게시물 등록 폼 제출 처리 함수
+    function submitPostForm(event) {
+      event.preventDefault(); // 폼 기본 제출 동작 방지
+
+      let postTitle = document.getElementById('post-title').value;
+      let postContent = document.getElementById('post-content').value;
+
+      // 폼 데이터를 객체로 구성
+      let postData = { title: postTitle, content: postContent };
+
+      //              -- 서버 데이터 처리 URL 작성 필요 --        //
+
+      // 서버로 폼 데이터 전송 
+      axios.post('서버의_데이터_처리_URL', postData)
+        .then(function (response) {
+          addPostToPage(postData); // 페이지에 게시물 추가
+          closeModal();
+          document.getElementById('post-form').reset();
+        })
+        .catch(function (error) {
+          console.error(error); // 오류 처리
+        });
+    }
+
+    // 페이지에 게시물 추가 함수
+    function addPostToPage(postData) {
+      let newPost = document.createElement('div');
+      newPost.className = 'post';
+      newPost.innerHTML = `
+    <div class="post-title">${postData.title}</div>
+    <div class="post-content">${postData.content}</div>
+    <div class="post-date">${new Date().toLocaleString('ko-KR')}</div>
+  `;
+      newPost.onclick = function () {
+        fetchPostDetails(postData.id);
+      };
+      document.getElementById('posts-container').appendChild(newPost);
+    }
+
+    // --         `/api/posts/${postId}` 서버 주소 수정 필요 --       //
+
+    // 게시글 상세 정보 요청 함수
+
+    function fetchPostDetails(postId) {
+      axios.get(`/api/posts/${postId}`)
+        .then(function (response) {
+          const postData = response.data;
+          showPostDetailsInModal(postData);
+        })
+        .catch(function (error) {
+          console.error('게시글 상세 정보 로딩 실패', error);
+        });
+    }
+
+    // 상세 게시글 정보를 모달에 표시하는 함수
+    function showPostDetailsInModal(postData) {
+      document.getElementById('detail-post-title').textContent = postData.title;
+      document.getElementById('detail-post-content').textContent = postData.content;
+      document.getElementById('detail-modal').style.display = 'block';
+    }
+
+    // 임시 데이터를 사용하여 게시물 목록 생성하는 함수 (삭제예정)
+    function addPosts() {
+      let postsData = [
+        { id: 1, title: '게시글1', content: '내용입니다 아아아아아아' },
+        { id: 2, title: '게시글2', content: '다른 내용입니다.' }
+      ];
+      postsData.forEach(function (postData) {
+        addPostToPage(postData);
+      });
+    }
+  </script>
+</body>
+
+</html>

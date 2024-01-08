@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- socket cdn -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>채팅방 테스트</h1>
+
+    <script>
+      const socket = io.connect();
+      socket.on("connect", () => {
+        console.log(
+          `클라이언트 연결 완료 : socket.id : ${socket.id} / club_id : ${1},`
+        );
+      });
+
+      socket.emit("send", {
+        club_id: "1",
+        userid_num: "user_id",
+        content: "your_message",
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.signup-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: auto;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signup-form label {
+  margin-bottom: 5px;
+}
+
+.signup-form input,
+.signup-form button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.signup-form button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+.signup-form button:hover {
+  background-color: #0056b3;
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .signup-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .signup-form input,
+  .signup-form button {
+    padding: 8px;
+  }
+
+  .signup-form label {
+    margin-bottom: 2px;
+  }
+}

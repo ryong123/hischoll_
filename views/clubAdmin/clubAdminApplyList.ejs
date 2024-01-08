@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>가입 요청</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminApplyList.css">
+</head>
+
+<body>
+  <%- include('../component/header')%>
+
+  <main class="request-list">
+    <!-- 가입 요청 목록 -->
+    <% for(let i=0; i<data.length;i++){ %>
+    <div class="request">
+      <div class="request-info">
+        <p class="requester-name"><%=data[i].dataValues.user.dataValues.userid%></p>
+        <p class="request-text"><%=data[i].dataValues.introduction%></p>
+      </div>
+      <button class="<%=data[i].dataValues.user.dataValues.userid_num%>" onclick="checkDetail(this)">상세 정보 확인</button>
+    </div>
+    
+    <% } %>
+    <!-- 추가 요청들을 여기에 반복 -->
+  </main>
+  <script>
+    const checkDetail=(clickedButton)=>{
+      let userid_num=clickedButton.className;
+      window.location.href=`/clubAdminApplyDetail/<%=data.club_id%>/<%=data.userid_num%>`
+    }
+  </script>
+</body>
+
+</html>

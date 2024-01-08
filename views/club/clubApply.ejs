@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>과학 동아리</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubApply.css">
+</head>
+
+<body>
+    <%- include('../component/header')%>
+
+<div class="club-name"> 가입 신청하기</div>
+  <form name="clubApplyform" onsubmit="clubApply(event)">
+    <section class="post-section">
+      <h2>지원동기</h2>
+      <textarea id="motivation" placeholder="플레이스홀더"></textarea>
+    </section>
+
+    <section class="post-section">
+      <h2>자기소개</h2>
+      <textarea id="introduction" placeholder="플레이스홀더"></textarea>
+    </section>
+
+    <button type="submit" class="btn-submit">가입 신청</button>
+  </form>
+  <script>
+    console.log('<%=data%>');
+    async function clubApply(event) {
+        event.preventDefault();
+
+        const createClubForm = document.forms["clubApplyform"];
+        console.log(createClubForm);
+
+        let motivation = createClubForm.elements["motivation"].value;
+
+        let introduction = createClubForm.elements["introduction"].value;
+        
+        
+        // 유효성 검사
+        
+
+        try {
+          const res = await axios({
+            method: "POST",
+            url: `/clubApply/<%=data%>`,
+            data: {
+              motivation:motivation,
+              introduction:introduction,
+              // 데이터 수정 --> 어떻게.......?
+              userid_num:1
+            },
+          });
+          console.log(res);
+          if(res.data.isApplySuccess){
+            alert('가입 신청이 완료되었습니다.');
+            window.location.href='/clubDetail/<%=data%>'
+          }
+          else{
+            alert('가입 신청이 되지 않았습니다. 다시 신청해주세요');
+            return;
+          }
+        } catch (error) {
+          console.log("createClub 에서 axios error > ", error);
+        }
+      }
+  </script>
+</body>
+
+</html>

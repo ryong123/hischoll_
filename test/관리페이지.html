@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>관리 페이지</title>
+  <link rel="stylesheet" href="관리페이지.css">
+</head>
+
+<body>
+  <div id="sidebar" class="sidebar">
+    <a href="#">관리 페이지 링크</a>
+    <a href="#">관리 페이지 링크</a>
+    <a href="#">관리 페이지 링크</a>
+    <a href="#">관리 페이지 링크</a>
+    <a href="#">관리 페이지 링크</a>
+    <!-- 추가적인 관리 항목 링크들 -->
+  </div>
+
+  <header class="header">
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+
+    <header class="header">
+      <nav class="navbar">
+      </nav>
+    </header>
+
+  </header>
+
+  <main class="main-content">
+    <!-- 메인 콘텐츠 -->
+    <p>클럽 페이지</p>
+  </main>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle('active');
+    }
+  </script>
+</body>
+
+</html>

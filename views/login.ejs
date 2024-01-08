@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>하이스쿨 - 로그인</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      .logo {
+        font-size: 32px;
+        font-weight: 700;
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+        color: var(--color-primary-500);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo">하이스쿨</h1>
+      <form name="login">
+        <div class="input">
+          <label for="userid">아이디</label>
+          <input type="text" id="userid" class="textField" onkeyup="if(window.event.keyCode==13){handleLogin()}" value="admin"/>
+        </div>
+        <div class="input">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" class="textField" onkeyup="if(window.event.keyCode==13){handleLogin()}" value="12341234"/>
+        </div>
+      </form>
+
+      <div class="cta">
+        <button type="button" class="btn btn-primary" onclick="handleLogin()" >
+          로그인
+        </button>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+    </script>
+
+    <script>
+
+      
+
+      const form = document.forms['login']
+
+      async function handleLogin() {
+        try {
+          const result = axios({
+            method: "POST",
+            url: "/auth/login",
+            data: {
+              userid: form.userid.value,
+              password: form.password.value,
+            },
+          }).then((res) => {
+            console.log(res.data.isLoggedIn);
+            if(res.data.isLoggedIn === true) {
+              localStorage.setItem('token', res.data.token)
+              // alert('로그인 성공')
+              document.location.href = '/home'
+              // axios({
+              //   method: "GET",
+              //   url: "/home",
+              //   Headers: {
+              //     "authorization": `Bearer ${localStorage.getItem('token')}`
+              //   }
+              // })
+            }
+          });
+        } catch (err) {
+          document.location.href = '/login'
+          console.log(err);
+        }
+      }
+    </script>
+  </body>
+</html>

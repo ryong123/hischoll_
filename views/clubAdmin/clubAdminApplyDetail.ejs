@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminApplyDetail.css">
+</head>
+
+
+
+<body>
+  <%- include('../component/header')%>
+
+  <div class="content">
+    <p class="content-title">이름</p>
+    <p class="content-detail"><%=data.name%></p>
+
+    <p class="content-title">학교</p>
+    <p class="content-detail"><%=data.school%></p>
+
+    <p class="content-title">학년</p>
+    <p class="content-detail"><%=data.grade%></p>
+
+    <p class="content-title">지원동기</p>
+    <p class="content-detail"><%=data.motivation%></p>
+
+    <p class="content-title">자기소개</p>
+    <p class="content-detail"><%=data.introduction%></p>
+
+
+    <button onclick="approve()">승인</button><br>
+    <button onclick="reject()">거절</button>
+
+
+  </div>
+
+  <script>
+    console.log('<%=data%>')
+    async function approve(){
+      try {
+          const res = await axios({
+            method: "POST",
+            url: "/clubAdminApplyDetail/<%=data.club_id%>/<%=data.userid_num%>",
+            data: {
+              ApplyResult:true,
+            },
+          });
+          console.log(res);
+          if(res.isSuccess){
+            alert('승인되었습니다');
+            window.location.href='clubAdminApplyList/<%=data.club_id%>'
+
+          }
+          else{
+            alert('오류가 발생했습니다. 다시 시도해주세요');
+          }
+        } catch (error) {
+          console.log("createClub 에서 axios error > ", error);
+        }
+
+    }
+
+
+    async function reject(){
+      try {
+          const res = await axios({
+            method: "DELETE",
+            url: "/clubAdminApplyDetail/<%=data.club_id%>/<%=data.userid_num%>",
+            data: {
+              ApplyResult:false,
+            },
+          });
+          console.log(res);
+          if(res.isSuccess){
+            alert('거절되었습니다');
+            window.location.href='clubAdminApplyList/<%=data.club_id%>'
+
+          }
+          else{
+            alert('오류가 발생했습니다. 다시 시도해주세요');
+          }
+        } catch (error) {
+          console.log("createClub 에서 axios error > ", error);
+        }
+
+    }
+  </script>
+
+</body>
+
+</html>
+

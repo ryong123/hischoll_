@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="/style.css">
+   <!-- axios CDN -->
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   <title>하이스쿨 - 게시글 작성</title>
+</head>
+
+<body>
+   <!-- 글쓰기 폼 -->
+   <form id="post-form" name="add-post">
+      <h2>게시글 작성</h2>
+      <input type="text" id="post-title" name="title" placeholder="제목을 입력하세요" />
+      <textarea id="post-content" name="content" placeholder="내용을 입력하세요"></textarea>
+      <button type="button" class="btn-primary" onclick="addpost()">
+         등록하기
+      </button>
+   </form>
+
+   <script>
+
+
+      const plusBtn = document.querySelector(".plus-button");
+      const form = document.forms["add-post"];
+      const btnPrmary = document.querySelector(".btn-primary");
+
+
+
+
+      function addpost() {
+         axios({
+            method: "POST",
+            url: "/myclubNewPost/1",
+            data: {
+               club_id: "1", // 임시 데이터
+               // userid: "2", // 임시 데이터
+               title: form.title.value,
+               content: form.content.value,
+               image: "1",
+            },
+         })
+            .then((res) => {
+
+               if (res.status === 200) {
+                  let clubId = "1"; // 예시 데이터, 실제로는 동적으로 설정
+                  let postId = res.data.post_id; // 응답으로부터 post_id를 얻음
+                  alert("게시물 등록완료");
+                  // 새 게시물 엘리먼트 생성
+                  const newPostElement = document.createElement('div');
+                  console.log(res.data);
+                  newPostElement.innerHTML = `
+            <h3>${form.title.value}</h3>
+            <p>${form.content.value}</p>
+            `;
+
+                  window.location.href = `/myclubPostDetail/1/${postId};
+               }`;
+               }
+            });
+
+      }
+
+
+   </script>
+</body>
+
+</html>

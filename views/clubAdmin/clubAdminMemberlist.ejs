@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 목록</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubAdminMemberList.css">
+  <style>
+
+  </style>
+</head>
+
+
+
+
+<body>
+   <%- include('../component/header')%>
+   <% for(let i=0; i<data.length;i++){ %>
+  <div class="content">
+    <!-- 회원 카드 목록 -->
+    <div class="card" onclick="showMemberDetail('<%=data[i].userid_num%>')">
+      <p class="member-name"><%=data[i].name%></p>
+      <p class="join-date"><%=data[i].date%></p>
+    </div>
+    <!-- 추가 회원 카드 반복 -->
+  </div>
+  <% } %>
+  </div>
+  <script>
+   function showMemberDetail(userid_num){
+      window.location.href="/clubAdminMemberDetail/<%=club_id%>/<%=userid_num%>"
+   }
+  </script>
+
+
+</body>
+
+</html>

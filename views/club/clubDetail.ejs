@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>동아리 상세</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/clubDetail.css">
+</head>
+
+<body>
+    <%- include('../component/header')%>
+
+  <div class="club-details">
+    <h1 class="club-name"><%=data.club_name%></h1>
+    <div style="display: none;" class="club_id"><%=data.club_id%></div>
+    <p class="club-description"><%=data.description%></p>
+    <div class="club-info">
+      <span class="info-keyword"><%=data.keyword%></span>
+      <span class="info-members"><%=data.limit%></span>
+      <span class="info-location"><%=data.location%></span>
+    </div>
+    <button class="btn-join" onclick="showApplyForm()">가입 신청</button>
+  </div>
+  <script>
+    function showApplyForm(){
+        const url = `/clubApply/<%=data.club_id%>`;
+        window.location.href=url;
+    }
+  </script>
+</body>
+
+</html>
